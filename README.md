@@ -1,3 +1,11 @@
+# Установка
+1. ```git clone https://github.com/stoicismguy/carwash_frontend```
+2. ```cd carwash_frontend```
+3. ```npm install```
+
+# Запуск
+1. ```npm run dev``` - девмод
+
 # Чтобы добавить UI из ShadCN:
 ## ```npx shadcn@latest add <название>```
 У каждого элемента есть вкладка ```Installation``` - в ней команда для установки\
