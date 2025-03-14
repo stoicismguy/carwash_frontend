@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Button, Separator } from './components/ui'
-import undraw_apps from './assets/undraw_apps.svg'
+import { Button } from '@/components/ui'
+import undraw_apps from '@/assets/undraw_apps.svg'
 import { motion } from 'motion/react'
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
         <div className='w-full h-screen flex flex-col items-center pt-10'>
             <img src={undraw_apps} alt="Vite logo" className='w-[20%] my-10'/>
             <h1 className='text-2xl'>Я подключил Tailwind, ShadCN</h1>
+            <h1 className='text-2xl'>DEVMODE</h1>
             <motion.div
                 initial={{ opacity: 0, rotate: 45 }}
                 animate={{ opacity: 1, rotate: 0 }}

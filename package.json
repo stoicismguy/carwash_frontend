@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "serve": "vite preview"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.2",
