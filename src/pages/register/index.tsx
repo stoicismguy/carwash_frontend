@@ -1,17 +1,19 @@
 import { LoginTemplate } from "@/shared/loginTemplate"
-import { Button } from "@/components/ui";
+import { Button, Skeleton } from "@/components/ui";
 import { Input } from "@/components/ui";
 import { useState } from "react";
 import { useMask } from "@react-input/mask"
 import { cn } from "@/lib/utils";
-import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { Building, Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 
-const Login = () => {
+const Register = () => {
     const navigate = useNavigate();
     const [isInvalid, setIsInvalid] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [load, setLoad] = useState(false);
+    const [tabValue, setTabValue] = useState("user");
 
     const inputRef = useMask({
         mask: "+7 (___) ___-__-__",
@@ -45,12 +47,25 @@ const Login = () => {
     return (
         <LoginTemplate type="login">
             <form className="flex flex-col gap-3 mb:items-center mb:w-full">
-                <h1 className="text-2xl font-bold mb:text-3xl">Авторизация</h1>
+                <h1 className="text-2xl font-bold mb:text-3xl">Регистрация</h1>
+
+                <Tabs className="w-full" defaultValue="user" onValueChange={(value) => setTabValue(value)}>
+                    <TabsList className="w-full h-10 mb:h-12">
+                        <TabsTrigger className="cursor-pointer mb:text-[16px]" value="user">Водитель</TabsTrigger>
+                        <TabsTrigger className="cursor-pointer mb:text-[16px]" value="buisness">Бизнес</TabsTrigger>
+                    </TabsList>
+                </Tabs>
+
+                {/* <Skeleton className="w-full h-10" /> */}
 
                 <Input type="text"
                     className={cn("h-10 mb:h-12", isInvalid ? "border-red-500 animate-shake transition-all" : "")}
                     placeholder="+7 (___) ___-__-__" ref={inputRef}
                     onChange={() => setIsInvalid(false)}/>
+
+                <Input type="text" className="h-10 mb:h-12"
+                    placeholder={tabValue === "buisness" ? "Название компании" : "Имя фамилия"} onInput={(e) => {console.log(e.target.value)}}
+                    maxLength={40} />
 
                 <div className="w-full flex items-center relative">
 
@@ -68,11 +83,11 @@ const Login = () => {
                 </div>
                 
                 <Button className="cursor-pointer h-10 font-bold mb:w-full mb:h-12 mb:text-lg" disabled={load}
-                    onClick={() => handlesSubmit(event)}>{load ? <LoaderCircle className="animate-spin"/> : "Вход"}</Button>
-                <p className="text-sm text-center text-muted-foreground">Нет аккаунта? <a href="/register" className="hover:text-primary underline-offset-4 underline">Зарегистрироваться</a></p>
+                    onClick={() => handlesSubmit(event)}>{load ? <LoaderCircle className="animate-spin"/> : "Зарегестрироваться"}</Button>
+                <p className="text-sm text-center text-muted-foreground">Уже есть аккаунт? <a href="/login" className="hover:text-primary underline-offset-4 underline">Войти</a></p>
             </form>
         </LoginTemplate>
     );
 }
 
-export default Login;
+export default Register;

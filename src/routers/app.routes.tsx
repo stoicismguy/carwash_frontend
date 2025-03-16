@@ -4,16 +4,17 @@ import { URLS } from "./app.urls";
 
 
 const Login = lazy(() => import("@/pages/login"));
-// const Register = lazy(() => import("@/pages/register"));
+const Main = lazy(() => import("@/pages/main"));
+const Register = lazy(() => import("@/pages/register"));
 // const Login = () => <div>Login</div>;
-const Register = () => <div>Register</div>;
+// const Register = () => <div>Register</div>;
 
 const Private = () => <div>PrivatePage</div>;
 
 export const PublicRoutes: Route[] = [
     {
         path: URLS.BASE,
-        element: <div>Home</div>,
+        element: <Main />,
     },
     {
         path: URLS.LOGIN,
