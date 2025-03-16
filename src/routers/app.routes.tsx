@@ -1,6 +1,5 @@
 import { lazy } from "react";
 import { Route } from "./types";
-import React from "react";
 import { URLS } from "./app.urls";
 
 

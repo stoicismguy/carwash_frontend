@@ -7,7 +7,7 @@ interface ILoginTemplateProps {
 
 export const LoginTemplate = ({ type, children }: ILoginTemplateProps) => {
     return (
-        <div className="grid grid-cols-[1fr_3fr] w-[60%] m-auto mt-[5%] h-[100%] mb:flex mb:w-[90%] mb:m-auto mb:h-[100%] mb:mt-[40%]">
+        <div className="grid grid-cols-[3fr_8fr] w-[60%] m-auto mt-[5%] h-[100%] mb:flex mb:w-[90%] mb:m-auto mb:h-[100%] mb:mt-[40%]">
             <div className="w-full pt-[15%]">
                 {children}
             </div>
