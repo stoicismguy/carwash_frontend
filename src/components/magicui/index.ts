@@ -1,0 +1,1 @@
+export { LineShadowText } from "./line-shadow-text";

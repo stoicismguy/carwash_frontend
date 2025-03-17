@@ -4,7 +4,7 @@ import { Input } from "@/components/ui";
 import { useState } from "react";
 import { useMask } from "@react-input/mask"
 import { cn } from "@/lib/utils";
-import { Building, Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 
