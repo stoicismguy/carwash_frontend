@@ -11,9 +11,13 @@ const Main = () => {
     return (
         <>
             <div>main</div>
-            <Button className="w-20" onClick={() => setLoad(!load)}>{load ? <LoaderCircle className="animate-spin"/> : "Submit"}</Button>
-            <Button variant={"outline"} className="h-10 w-10" onClick={() => setLoad(!load)}>{load ? <RotateCw className="animate-spin"/> : <RotateCw />}</Button>
-            <Button onClick={() => navigate("/login")}>to login</Button>
+            <div className="flex"> 
+                <Button className="w-20" onClick={() => setLoad(!load)}>{load ? <LoaderCircle className="animate-spin"/> : "Submit"}</Button>
+                <Button className="w-20" variant={"secondary"} onClick={() => setLoad(!load)}>{load ? <LoaderCircle className="animate-spin"/> : "Submit"}</Button>
+                <Button className="w-20" variant={"destructive"} onClick={() => setLoad(!load)}>{load ? <LoaderCircle className="animate-spin"/> : "Submit"}</Button>
+                <Button variant={"outline"} size={"icon"} onClick={() => setLoad(!load)}>{load ? <RotateCw className="animate-spin"/> : <RotateCw />}</Button>
+                <Button onClick={() => navigate("/login")}>to login</Button>
+            </div>
         </>     
     )
 }
