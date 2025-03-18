@@ -6,6 +6,8 @@ import { URLS } from "./app.urls";
 const Login = lazy(() => import("@/pages/login"));
 const Main = lazy(() => import("@/pages/main"));
 const Register = lazy(() => import("@/pages/register"));
+const Search = lazy(() => import("@/pages/search"));
+const FAQ = lazy(() => import("@/pages/faq"));
 // const Login = () => <div>Login</div>;
 // const Register = () => <div>Register</div>;
 
@@ -23,6 +25,14 @@ export const PublicRoutes: Route[] = [
     {
         path: URLS.REGISTER,
         element: <Register />,
+    },
+    {
+        path: URLS.SEARCH,
+        element: <Search />,
+    },
+    {
+        path: URLS.FAQ,
+        element: <FAQ />,
     }
 ]
 
