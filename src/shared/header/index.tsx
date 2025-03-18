@@ -6,10 +6,24 @@ import { IAuthContext } from "@/AuthContext";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+interface ILink {
+    text: string,
+    img: React.ReactElement,
+    link: string,
+}
+
 const Header = ({ user, login, logout }: IAuthContext) => {
 
     const [open, setOpen] = React.useState(false);
     const naviage = useNavigate();
+
+    const linkList: ILink[] = [
+        {
+            text: "FAQ",
+            img: <CircleHelp />,
+            link: "/faq"
+        }
+    ];
 
     return (
         <div className="w-full h-[55px] flex items-center justify-between pr-15 pl-10 mb:px-5 border-b-1">
@@ -21,10 +35,13 @@ const Header = ({ user, login, logout }: IAuthContext) => {
                     </motion.div>  
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem><CircleHelp />FAQ</DropdownMenuItem>
+                    {linkList.map((link, index) => (
+                        <DropdownMenuItem onClick={() => naviage(link.link)}>{link.img}{link.text}</DropdownMenuItem>
+                    ))}
+                    
                 </DropdownMenuContent>
             </DropdownMenu>
-            <div className="h-full flex items-center">
+            <div className="h-full flex items-center mb:hidden">
                 <Button variant={"link"} onClick={() => naviage("/faq")}>FAQ</Button>
             </div>
             

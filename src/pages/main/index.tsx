@@ -30,7 +30,7 @@ const Main = () => {
                 <div className="absolute z-10 top-0 w-full h-full bg-black/50 flex flex-col">
                     <div className="w-full h-[60px] text-primary-foreground backdrop-blur-md bg-primary/10 grid grid-cols-[1fr_50px_1fr] px-10 mb:px-0">
                         <NavWrapper>
-                            <Button onClick={() => navigate("/faq")} variant={"link"} className="text-primary-foreground">Стать партнером</Button>
+                            <Button onClick={() => navigate("/faq?q=partner")} variant={"link"} className="text-primary-foreground">Стать партнером</Button>
                         </NavWrapper>
                         <NavWrapper>
                             <Aperture className="text-primary-foreground w-9 h-9 mx-auto" strokeWidth={1}/>
