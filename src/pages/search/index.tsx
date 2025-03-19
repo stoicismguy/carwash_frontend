@@ -33,6 +33,7 @@ const Search = () => {
 
     const { user, login, logout } = useAuth();
     const [stage, setStage] = useState(0);
+
     const [orderData, setOrderData] = useState<IOrderData>({
         carwash: "123",
         autotype: "1",

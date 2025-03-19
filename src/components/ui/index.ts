@@ -34,3 +34,14 @@ export {
     PopoverTrigger } from "./popover"
 export { Checkbox } from "./checkbox";
 export { Label } from "./label";
+export {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger } from "./drawer"
+export { Switch } from "./switch";
+  
