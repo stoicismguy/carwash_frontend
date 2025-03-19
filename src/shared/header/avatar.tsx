@@ -12,12 +12,12 @@ const AvatarHeader = ({ user, login, logout }: IAvatar) => {
         <>
         {user ?
             <div className="h-full flex items-center gap-3 mb:gap-1">
-                <div className="h-full flex items-center gap-2 px-2 hover:cursor-pointer hover:bg-secondary">
+                <div className="h-full flex items-center gap-2 px-2 hover:cursor-pointer hover:bg-secondary mb:flex-row-reverse">
                     <Avatar className="h-9 w-9">
                         {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
                         <AvatarFallback className="bg-primary text-primary-foreground">{user.name[0]}</AvatarFallback>
                     </Avatar>
-                    <div className="h-full flex flex-col gap-0 items-start leading-none justify-center mb:hidden">
+                    <div className="h-full flex flex-col gap-0 items-start mb:items-end leading-none justify-center">
                         <p className="text-[12px] leading-none">{user.user_type}</p>
                         <p className="text-lg font-semibold leading-none">{user.name}</p>
                     </div>

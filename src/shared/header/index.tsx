@@ -29,9 +29,9 @@ const Header = ({ user, login, logout }: IAuthContext) => {
         <div className="w-full h-[55px] flex items-center justify-between pr-15 pl-10 mb:px-5 border-b-1">
             {/* <Button variant={"link"} >Стать партнером</Button> */}
             <DropdownMenu onOpenChange={() => {setOpen(!open)}}>
-                <DropdownMenuTrigger className="sm:hidden" asChild>
+                <DropdownMenuTrigger className="sm:hidden cursor-pointer" asChild>
                     <motion.div initial={{ rotate: 0 }} animate={{ rotate: open ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                        <Menu className="cursor-pointer" />
+                        <Menu />
                     </motion.div>  
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

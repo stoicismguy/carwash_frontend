@@ -20,4 +20,17 @@ export { Breadcrumb,
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator } from "./breadcrumb";
-  
+export {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue } from "./select"
+export {
+    Popover,
+    PopoverContent,
+    PopoverTrigger } from "./popover"
+export { Checkbox } from "./checkbox";
+export { Label } from "./label";
