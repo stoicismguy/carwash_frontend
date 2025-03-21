@@ -5,6 +5,7 @@ import AvatarHeader from "./avatar";
 import { IAuthContext } from "@/AuthContext";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Logo from "@/shared/logo";
 
 interface ILink {
     text: string,
@@ -38,13 +39,14 @@ const Header = ({ user, login, logout }: IAuthContext) => {
                     {linkList.map((link, index) => (
                         <DropdownMenuItem onClick={() => naviage(link.link)}>{link.img}{link.text}</DropdownMenuItem>
                     ))}
-                    
                 </DropdownMenuContent>
             </DropdownMenu>
+
             <div className="h-full flex items-center mb:hidden">
                 <Button variant={"link"} onClick={() => naviage("/faq")}>FAQ</Button>
             </div>
-            
+
+            <Logo color="black" className="text-2xl" />
             <AvatarHeader user={user} login={() => {}} logout={logout} />
         </div>
     )

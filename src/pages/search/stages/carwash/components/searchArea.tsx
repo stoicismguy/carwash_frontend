@@ -1,10 +1,10 @@
 import { Button, Drawer,
-    DrawerClose, DrawerContent, DrawerHeader, 
+    DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, 
     DrawerTitle, DrawerTrigger, Input, 
     Label, Switch } from "@/components/ui";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CircleX, Settings2, X } from "lucide-react";
+import { CircleX, Settings2, Star, X } from "lucide-react";
 
 // interface IProps {
 //     focused: boolean,
@@ -28,16 +28,19 @@ const SearchArea = () => {
                         <DrawerClose asChild>
                             <h1>Закрыть</h1>
                         </DrawerClose>
-                        <DrawerTitle className="text-lg">Фильтры</DrawerTitle>
+                        <DrawerTitle className="text-lg">Сортировать по</DrawerTitle>
                         <h1>Сбросить</h1>
                     </DrawerHeader>
                     <div className="w-full pb-90 px-3">
-                        <div className="w-full flex h-[40px] items-center justify-between">
-                            <Label htmlFor="rate" className="text-md">С рейтингом выше 4.7</Label>
+                        {/* <div className="w-full flex h-[40px] items-center justify-between">
+                            <Label htmlFor="rate" className="text-md">С рейтингом выше 4.7<Star size={15}/></Label>
                             <Switch className="h-6 w-11" id="rate" />
-                        </div>
-                        
+                        </div> */}
+                        <Button variant={"secondary"} size={"lg"} className="w-full flex items-center gap-2 justify-center"><h1>По рейтингу</h1><Star size={15}/></Button>
                     </div>
+                    <DrawerFooter>
+                        <Button className="w-full h-[50px] text-md">Применить</Button>
+                    </DrawerFooter>
                 </DrawerContent>
             </Drawer>
             

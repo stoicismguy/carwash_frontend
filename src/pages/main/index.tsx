@@ -28,12 +28,13 @@ const Main = () => {
                     <source src={video} type="video/mp4"/>
                 </video>
                 <div className="absolute z-10 top-0 w-full h-full bg-black/50 flex flex-col">
-                    <div className="w-full h-[60px] text-primary-foreground backdrop-blur-md bg-primary/10 grid grid-cols-[1fr_50px_1fr] px-10 mb:px-0">
+                    <div className="w-full h-[60px] text-primary-foreground backdrop-blur-md bg-primary/10 grid grid-cols-[2fr_1fr_2fr] px-10 mb:px-0">
                         <NavWrapper>
                             <Button onClick={() => navigate("/faq?q=partner")} variant={"link"} className="text-primary-foreground">Стать партнером</Button>
                         </NavWrapper>
-                        <NavWrapper>
-                            <Aperture className="text-primary-foreground w-9 h-9 mx-auto" strokeWidth={1}/>
+                        <NavWrapper className="flex items-center">
+                            <h1 className="text-primary-foreground mx-auto text-2xl sm:text-4xl font-bold flex">МОЙ<LineShadowText className="italic" shadowColor="white">ЕКБ</LineShadowText></h1>
+                            {/* <Aperture className="text-primary-foreground w-9 h-9 mx-auto" strokeWidth={1}/> */}
                         </NavWrapper>
                         <NavWrapper className="flex justify-end">
                             <Button onClick={() => navigate("/search")} variant={"link"} className="text-primary-foreground">Искать автомойки</Button>
