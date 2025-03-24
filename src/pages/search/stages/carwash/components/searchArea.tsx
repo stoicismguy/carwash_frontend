@@ -4,7 +4,7 @@ import { Button, Drawer,
     Label, Switch } from "@/components/ui";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CircleX, Settings2, Star, X } from "lucide-react";
+import { CircleX, MapPin, Settings2, Star, X } from "lucide-react";
 
 // interface IProps {
 //     focused: boolean,
@@ -12,10 +12,33 @@ import { CircleX, Settings2, Star, X } from "lucide-react";
 //     setInputValue: (value: string) => void
 // }
 
+interface IFilter {
+    name: string,
+    logo: React.ReactElement,
+    checked: boolean
+}
+
 const SearchArea = () => {
 
     const [focused, setFocused] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const filters: IFilter[] = [
+        {
+            name: "Рейтинг",
+            logo: <Star size={20}/>,
+            checked: true
+        },
+        {
+            name: "Расстояние",
+            logo: <MapPin size={20}/>,
+            checked: false
+        },
+        {
+            name: "Стоимость",
+            logo: <CircleX size={20}/>,
+            checked: false
+        },
+    ]
 
     return (
         <div className="w-full flex items-center gap-2">
@@ -31,12 +54,10 @@ const SearchArea = () => {
                         <DrawerTitle className="text-lg">Сортировать по</DrawerTitle>
                         <h1>Сбросить</h1>
                     </DrawerHeader>
-                    <div className="w-full pb-90 px-3">
-                        {/* <div className="w-full flex h-[40px] items-center justify-between">
-                            <Label htmlFor="rate" className="text-md">С рейтингом выше 4.7<Star size={15}/></Label>
-                            <Switch className="h-6 w-11" id="rate" />
-                        </div> */}
-                        <Button variant={"secondary"} size={"lg"} className="w-full flex items-center gap-2 justify-center"><h1>По рейтингу</h1><Star size={15}/></Button>
+                    <div className="w-full pb-30 flex flex-col gap-2 px-3">
+                        {filters.map((filter, index) => (
+                            <Button variant={filter.checked ? "default" : "secondary"} size={"lg"} className="w-full flex items-center text-md gap-2 justify-center"><h1>{filter.name}</h1>{filter.logo}</Button>
+                        ))}
                     </div>
                     <DrawerFooter>
                         <Button className="w-full h-[50px] text-md">Применить</Button>

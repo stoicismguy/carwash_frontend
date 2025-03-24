@@ -6,12 +6,18 @@ import { useMask } from "@react-input/mask"
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/AuthContext";
 
 const Login = () => {
     const navigate = useNavigate();
     const [isInvalid, setIsInvalid] = useState(false);
+
+    const [password, setPassword] = useState("");
+    const [phone, setPhone] = useState("");
+
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [load, setLoad] = useState(false);
+    const { login } = useAuth();
 
     const inputRef = useMask({
         mask: "+7 (___) ___-__-__",
@@ -26,7 +32,7 @@ const Login = () => {
         return false;
     }
 
-    const handlesSubmit = (event: any) => {
+    const handlesSubmit = async (event: any) => {
         event.preventDefault();
         setLoad(true);
         const phoneValue = inputRef.current?.value || "";
@@ -36,8 +42,13 @@ const Login = () => {
             setTimeout(() => setIsInvalid(false), 500);
         }
         else {
-           // Тут можно дальше логику авторизации пихать
-           navigate("/");
+            const validPhone = phoneValue.replace(/[ -+()-]/g, "");
+            console.log(validPhone, password);
+            const success = await login({ phone_number: validPhone, password: password });
+            if (success) {
+                navigate("/search");
+            }
+            // navigate("/");
         }
         setLoad(false);
     }
@@ -50,12 +61,16 @@ const Login = () => {
                 <Input type="text"
                     className={cn("h-10 mb:h-12", isInvalid ? "border-red-500 animate-shake transition-all" : "")}
                     placeholder="+7 (___) ___-__-__" ref={inputRef}
-                    onChange={() => setIsInvalid(false)}/>
+                    onChange={() => {
+                        setPhone(inputRef.current?.value || ""),
+                        setIsInvalid(false)
+                    }}/>
 
                 <div className="w-full flex items-center relative">
 
                     <Input type={passwordVisible ? "password" : "text"}
                         placeholder="Пароль" 
+                        onChange={(e) => setPassword(e.target.value)}
                         className="pr-9 h-10 mb:h-12 mb:pr-11" />
 
                     {!passwordVisible ? 

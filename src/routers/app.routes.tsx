@@ -8,6 +8,7 @@ const Main = lazy(() => import("@/pages/main"));
 const Register = lazy(() => import("@/pages/register"));
 const Search = lazy(() => import("@/pages/search"));
 const FAQ = lazy(() => import("@/pages/faq"));
+const Profile = lazy(() => import("@/pages/profile"));
 // const Login = () => <div>Login</div>;
 // const Register = () => <div>Register</div>;
 
@@ -40,5 +41,9 @@ export const PrivateRoutes: Route[] = [
     {
         path: URLS.PRIVATE,
         element: <Private />,
+    },
+    {
+        path: URLS.PROFILE,
+        element: <Profile />,
     }
 ]

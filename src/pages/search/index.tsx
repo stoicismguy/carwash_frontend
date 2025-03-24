@@ -1,6 +1,6 @@
 import { useAuth } from "@/AuthContext";
 import Header from "@/shared/header";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BreadcrumbNavigation from "./BreadCrumbNavigation";
 import { motion } from "framer-motion";
 import { Carwash, Autotype, Department, Services, Payment } from "./stages";
@@ -31,12 +31,11 @@ export interface IPageProps {
 
 const Search = () => {
 
-    const { user, login, logout } = useAuth();
     const [stage, setStage] = useState(0);
-
+    const [pendingStage, setPendingStage] = useState<number | null>(null);
     const [orderData, setOrderData] = useState<IOrderData>({
-        carwash: "123",
-        autotype: "1",
+        carwash: null,
+        autotype: null,
         department: null,
         services: null
     })
@@ -50,25 +49,40 @@ const Search = () => {
     ]
 
     const handleStageSwitch = (index: number) => {
+        console.log("Current stage:", stage, "Target index:", index, "OrderData:", orderData);
         if (index === stage) return;
         if (index < stage) {
-            setStage(index);
-            return;
+          setStage(index);
+          return;
         }
         for (let i = stage; i < index; i++) {
-            const currentPage = pages.find((p) => p.stage === i);
-            if (orderData[currentPage?.dataname as keyof IOrderData] === null) {
-                return;
-            }
+          const currentPage = pages.find((p) => p.stage === i);
+          if (currentPage && orderData[currentPage.dataname] === null) {
+            setPendingStage(index); // Запоминаем целевой этап
+            return;
+          }
         }
         setStage(index);
-    }
+      };
 
-    const CurrentPage = pages[stage].page;
+    useEffect(() => {
+        if (pendingStage !== null) {
+          for (let i = stage; i < pendingStage; i++) {
+            const currentPage = pages.find((p) => p.stage === i);
+            if (currentPage && orderData[currentPage.dataname] === null) {
+              return; // Ещё не все данные готовы
+            }
+          }
+          setStage(pendingStage);
+          setPendingStage(null); // Сбрасываем
+        }
+      }, [orderData, stage, pendingStage]);
+
+    let CurrentPage = pages[stage].page;
     
     return (
         <>
-            <Header user={user} login={login} logout={logout}/>
+            <Header />
             <BreadcrumbNavigation className="h-[60px] mb:px-5 mb:h-[80px]" pages={pages} stage={stage} handleStage={handleStageSwitch} />
             <motion.div
                 key={stage}

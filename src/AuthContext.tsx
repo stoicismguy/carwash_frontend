@@ -3,14 +3,20 @@ import React, { useState } from "react"
 import api from "./api"
 
 interface ILogin {
-    phone: string,
+    phone_number: string,
     password: string
+}
+
+interface IUser {
+    name: string,
+    user_type: string,
+    phone_number: string
 }
 
 export interface IAuthContext {
     user: any,
     // login: ({phone, password}: ILogin) => Promise<void>,
-    login: () => void,
+    login: ({phone_number, password}: ILogin) => Promise<boolean>,
     logout: () => void
 }
 
@@ -19,31 +25,34 @@ const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactElement }> = ({ children}) => {
 
-    // const [user, setUser] = useState<any>(null);
-    // const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken") || null);
-    // const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refreshToken") || null);
+    const user = () => {
+        const user = localStorage.getItem("user");
+        if (user) {
+            return JSON.parse(user);
+        }
+        else {
+            return null;
+        }
+    }
 
-    // const user = {"name": "Даниил", user_type: "Водитель"};
-    const user = {"name": "Авто Авеню", user_type: "Бизнес"};
-    const login = () => {console.log("login")};
-    const logout = () => {console.log("logout")};
-
-    // const login = async ({phone, password}: ILogin) => {
-    //     try {
-    //         const response = await api.post("/auth/login", { phone, password });
-    //         const { access, refresh, user } = response.data;
-        
-    //         setUser(user);
-    //         setAccessToken(access);
-    //         setRefreshToken(refresh);
-        
-    //         localStorage.setItem("accessToken", access);
-    //         localStorage.setItem("refreshToken", refresh);
-    //         localStorage.setItem("user", JSON.stringify(user));
-    //     } catch (err) {
-    //         throw "123";
-    //     }
-    // };
+    const login = async ({ phone_number, password }: ILogin) => {
+        await api.post("users/token/", { phone_number, password }).then((res) => {
+            localStorage.setItem("accessToken", res.data.access);
+            localStorage.setItem("refreshToken", res.data.access);
+            // localStorage.setItem("user", JSON.stringify(user));
+            console.log(res.data);
+        }).catch((error) => {return false});
+        await api.get("users/").then((res) => {
+            localStorage.setItem("user", JSON.stringify(res.data));
+            console.log(res.data);
+        }).catch((error) => {return false});
+        return true;
+    };
+    const logout = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+    };
 
     return (
         <AuthContext.Provider value={{user, login, logout}}>{children}</AuthContext.Provider>

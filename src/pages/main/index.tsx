@@ -37,8 +37,8 @@ const Main = () => {
                             {/* <Aperture className="text-primary-foreground w-9 h-9 mx-auto" strokeWidth={1}/> */}
                         </NavWrapper>
                         <NavWrapper className="flex justify-end">
-                            <Button onClick={() => navigate("/search")} variant={"link"} className="text-primary-foreground">Искать автомойки</Button>
-                            <Button variant={"secondary"} className="rounded-full mb:hidden" onClick={() => navigate("/register")}>Регистрация</Button>
+                            <Button onClick={() => navigate("/search")} variant={"link"} className="text-primary-foreground mb:hidden">Искать автомойки</Button>
+                            <Button variant={"secondary"} className="rounded-full mb:bg-transparent mb:text-primary-foreground" onClick={() => navigate("/register")}>Регистрация</Button>
                         </NavWrapper>
                     </div>
                     <div className="w-full h-full flex flex-col gap-0 items-center justify-center">

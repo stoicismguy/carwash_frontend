@@ -1,14 +1,29 @@
 import { Button, Checkbox, Input, Label, Popover, PopoverContent, PopoverTrigger, Skeleton } from "@/components/ui";
 import { Car, ChevronDown, ChevronRight, CircleX, Search, Star } from "lucide-react";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { CarwashList, SearchArea, Filters } from "./components";
 import { IPageProps } from "../..";
+import api from "@/api";
+
 
 const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
 
-    const handleChoose = () => {
-        changeData({...data, carwash: "inputValue" });
+    const [list, setList] = useState<any[]>([]);
+
+    const fetchList = async () => {
+        await api.get("carwashes/").then((res) => {
+            setList(res.data);
+        })
+    }
+
+    useEffect(() => {
+        fetchList();
+    }, [])
+
+    const handleChoose = ({ value }: any) => {
+        console.log(value);
+        changeData({...data, carwash: value });
+        handleStage(page.stage + 1);
     }
 
     return (
@@ -17,7 +32,7 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
                 <SearchArea />
                 {/* <Filters /> */}
             </div>
-            <CarwashList data={Array(10).fill(0)} />
+            <CarwashList data={list} choose={handleChoose} />
         </div>
     )
 }

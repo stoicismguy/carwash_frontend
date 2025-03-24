@@ -1,18 +1,19 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { PublicRoutes, PrivateRoutes } from "./app.routes";
 import { ErrorElement } from "./errorElement/errorElement";
 import { useAuth } from "@/AuthContext";
 import React from "react";
+import { GoLogin } from "./goLogin";
 
 interface IRoute {
     element: React.ReactElement
 }
 
-// Логика проверки какой-нибудь хуйни для пользователя
+// Если пользователь не авторизован то и делать ему на этих страницах нечего
 const PrivateRouterWrapper = ({ element }: IRoute) => {
-    // return element
-    const { a } = useAuth();
-    return a ? element : <ErrorElement />
+    const { user } = useAuth();
+    const currentUser = user();
+    return currentUser ? element : <GoLogin />;
 }
 
 export const appRouter = createBrowserRouter([
