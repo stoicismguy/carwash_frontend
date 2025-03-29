@@ -1,4 +1,4 @@
-import Autotype from "./autotype";
+import Autotype from "./ autotype";
 import Carwash from "./carwash";
 import Department from "./department";
 import Services from "./services";

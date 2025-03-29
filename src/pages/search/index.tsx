@@ -3,7 +3,7 @@ import Header from "@/shared/header";
 import React, { useEffect, useState } from "react";
 import BreadcrumbNavigation from "./BreadCrumbNavigation";
 import { motion } from "framer-motion";
-import { Carwash, Autotype, Department, Services, Payment } from "./stages";
+import { Carwash, Department, Services, Payment, Autotype } from "./stages";
 
 
 interface IPage {
@@ -13,7 +13,7 @@ interface IPage {
     dataname: keyof IOrderData
 }
 
-interface IOrderData {
+export interface IOrderData {
     carwash: string | null;
     autotype: "1" | "2" | "3" | null;
     department: string | null;
@@ -25,7 +25,7 @@ export interface IPageProps {
     page: IPage,
     handleStage: (index: number) => void,
     data: IOrderData,
-    changeData: (data: IOrderData) => void
+    changeData: (data: IOrderData, stage: number) => void
 }
 
 
@@ -37,7 +37,8 @@ const Search = () => {
         carwash: null,
         autotype: null,
         department: null,
-        services: null
+        services: null,
+        payment: null
     })
 
     const pages: IPage[] = [
@@ -63,20 +64,30 @@ const Search = () => {
           }
         }
         setStage(index);
-      };
+    };
 
     useEffect(() => {
         if (pendingStage !== null) {
-          for (let i = stage; i < pendingStage; i++) {
-            const currentPage = pages.find((p) => p.stage === i);
-            if (currentPage && orderData[currentPage.dataname] === null) {
-              return; // Ещё не все данные готовы
-            }
-          }
-          setStage(pendingStage);
-          setPendingStage(null); // Сбрасываем
+            for (let i = stage; i < pendingStage; i++) {
+                    const currentPage = pages.find((p) => p.stage === i);
+                    if (currentPage && orderData[currentPage.dataname] === null) {
+                        return; // Ещё не все данные готовы
+                }
         }
-      }, [orderData, stage, pendingStage]);
+        setStage(pendingStage);
+        setPendingStage(null); // Сбрасываем
+        }
+    }, [orderData, stage, pendingStage]);
+
+    const orderDataSetter = (data: IOrderData, stage: number) => {
+        setOrderData(data);
+        pages.filter((p) => p.stage > stage).forEach((p) => {
+            setOrderData((prevData) => ({
+                ...prevData,
+                [p.dataname]: null
+            }));
+        })
+    }
 
     let CurrentPage = pages[stage].page;
     
@@ -94,7 +105,7 @@ const Search = () => {
                     page={pages[stage]}
                     handleStage={handleStageSwitch}
                     data={orderData}
-                    changeData={setOrderData} />
+                    changeData={orderDataSetter} />
             </motion.div>
         </>
     );

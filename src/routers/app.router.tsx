@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { PublicRoutes, PrivateRoutes } from "./app.routes";
 import { ErrorElement } from "./errorElement/errorElement";
 import { useAuth } from "@/AuthContext";

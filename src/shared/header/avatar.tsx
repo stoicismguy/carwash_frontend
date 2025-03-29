@@ -21,7 +21,7 @@ const AvatarHeader = ({ user, logout }: IAvatar) => {
                         <AvatarFallback className="bg-primary text-primary-foreground">{user.name[0]}</AvatarFallback>
                     </Avatar>
                     <div className="h-full flex flex-col gap-0 items-start mb:hidden leading-none justify-center">
-                        <p className="text-[12px] leading-none">{user.user_type === "business" ? "Бизнес" : "Пользователь"}</p>
+                        <p className="text-[12px] leading-none">{user.user_type === "business" ? "Бизнес" : "Водитель"}</p>
                         <p className="text-lg font-semibold leading-none">{user.name}</p>
                     </div>
                 </div>

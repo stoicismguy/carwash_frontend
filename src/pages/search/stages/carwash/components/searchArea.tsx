@@ -66,7 +66,7 @@ const SearchArea = () => {
             </Drawer>
             
             <motion.div
-                animate={{ scale: focused ? 1.05 : 1, y: focused ? -5 : 0, width: focused ? "100%" : "" }}
+                animate={{ scale: focused ? 1.00 : 1, y: focused ? -5 : 0, width: focused ? "100%" : "" }}
                 transition={{ duration: 0.2 }}
                 onChange={(e) => setInputValue((e.target as HTMLInputElement).value)}
                 className="w-full relative">
