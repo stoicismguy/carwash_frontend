@@ -42,7 +42,7 @@ const Services = ({ page, handleStage, changeData, data }: IPageProps) => {
                 ))}
             </div> : (
                 <>
-                    {list.length === 0 && <h1 className="text-center text-muted-foreground mt-[60%]">Услуги не найдены</h1>}
+                    {list.length === 0 && <h1 className="text-center text-muted-foreground mt-[10%] mb:mt-[60%]">Услуги не найдены</h1>}
                     <ServicesList data={data} list={list} choose={handleChoose} />
                     {list.length !== 0 && <Button className="h-[40px] mt-3 flex items-center" disabled={list.length === 0} onClick={() => handleStage(page.stage + 1)}>К оплате 
                     <div className="flex text-primary font-semibold bg-primary-foreground p-1 w-6 h-6 items-center justify-center rounded-full">3</div>

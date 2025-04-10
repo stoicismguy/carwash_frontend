@@ -13,8 +13,7 @@ const Department = ({ page, handleStage, changeData, data }: IPageProps) => {
     const fetchList = async () => {
         setLoading(true);
         await api.get(`carwashes/${data.carwash}/branches/?bodytypes=${data.autotype}`).then((res) => {
-            setList(res.data);
-            console.log(res.data);
+            setList(res.data.results);
         }).finally(() => {
             setLoading(false);
         })
@@ -39,7 +38,7 @@ const Department = ({ page, handleStage, changeData, data }: IPageProps) => {
                     </>  
                 ))}
             </div> : <>
-                {list.length === 0 && <h1 className="text-center text-muted-foreground mt-[60%]">Филиалы не найдены</h1>}
+                {list.length === 0 && <h1 className="text-center text-muted-foreground mt-[10%] mb:mt-[60%]">Филиалы не найдены</h1>}
                 <DepartmentList data={data} list={list} choose={handleChoose} />
             </>}
             

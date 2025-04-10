@@ -25,7 +25,6 @@ const Autotype = ({ page, handleStage, changeData, data }: IPageProps) => {
     }, [])
 
     const handleChoose = ({ value }: any) => {
-        console.log(value);
         changeData({...data, autotype: value }, page.stage);
         handleStage(page.stage + 1);
     }
@@ -40,7 +39,7 @@ const Autotype = ({ page, handleStage, changeData, data }: IPageProps) => {
                     </div>
                 ))}
             </div> : <>
-                {list.length === 0 && <p className="text-center text-muted-foreground mt-[60%]">Ничего не найдено</p>}
+                {list.length === 0 && <p className="text-center text-muted-foreground mt-[10%] mb:mt-[60%]">Ничего не найдено</p>}
                 <TypesList list={list} choose={handleChoose} data={data} />
             </>}
             

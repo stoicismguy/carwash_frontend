@@ -2,15 +2,25 @@ import { useEffect, useState } from "react";
 import { CarwashList, SearchArea } from "./components";
 import { IPageProps } from "../..";
 import api from "@/api";
+import PaginationMenu from "@/shared/paginationMenu";
 
+
+interface IResponse {
+    count: number;
+    total_pages: number;
+    current: number;
+    next: string | null;
+    previous: string | null;
+    results: any[];
+}
 
 const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
 
-    const [list, setList] = useState<any[]>([]);
+    const [response, setResponse] = useState<IResponse | null>(null);
 
     const fetchList = async () => {
-        await api.get("carwashes/").then((res) => {
-            setList(res.data);
+        await api.get("carwashes/search/").then((res) => {
+            setResponse(res.data);
         })
     }
 
@@ -19,7 +29,6 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
     }, [])
 
     const handleChoose = ({ value }: any) => {
-        console.log(value);
         changeData({...data, carwash: value }, page.stage);
         handleStage(page.stage + 1);
     }
@@ -30,7 +39,8 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
                 <SearchArea />
                 {/* <Filters /> */}
             </div>
-            <CarwashList data={data} list={list} choose={handleChoose} />
+            <CarwashList data={data} list={response?.results} choose={handleChoose} />
+            {response && <PaginationMenu current={response.current} total={response?.total_pages} />}
         </div>
     )
 }

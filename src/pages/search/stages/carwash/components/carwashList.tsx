@@ -3,7 +3,7 @@ import { ChevronRight, Star } from "lucide-react";
 import { IOrderData } from "@/pages/search";
 
 interface IProps {
-    list: any[],
+    list?: any[],
     choose: (value: any) => void,
     data: IOrderData
 }
@@ -11,7 +11,7 @@ interface IProps {
 const CarwashList = ({ data, list, choose }: IProps) => {
     return (
         <div className="w-full grid grid-cols-3 mb:grid-cols-1 gap-4">
-            {list.map((item) => (
+            {list && list.map((item) => (
                 <div
                     key={item.name}
                     className="w-full rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow flex flex-col justify-between items-start border min-h-[250px]"
