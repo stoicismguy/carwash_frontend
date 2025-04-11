@@ -3,7 +3,7 @@ import { Button, Drawer,
     DrawerTitle, DrawerTrigger, Input, 
     Label, Switch } from "@/components/ui";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { CircleX, MapPin, Settings2, Star, X } from "lucide-react";
 
 // interface IProps {
@@ -66,15 +66,16 @@ const SearchArea = () => {
             </Drawer>
             
             <motion.div
-                animate={{ scale: focused ? 1.00 : 1, y: focused ? -5 : 0, width: focused ? "100%" : "" }}
+                animate={{ scale: focused ? 1.00 : 1, y: focused ? 0 : 0, width: focused ? "100%" : "" }}
                 transition={{ duration: 0.2 }}
                 onChange={(e) => setInputValue((e.target as HTMLInputElement).value)}
                 className="w-full relative">
-                <Input
-                    onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
-                    value={inputValue}
-                    placeholder="Поиск автомоек" className="h-[45px] rounded-xl"></Input>
+                    <Input
+                        onFocus={() => setFocused(true)}
+                        onBlur={() => setFocused(false)}
+                        value={inputValue}
+                        placeholder="Поиск автомоек" className="h-[45px] rounded-xl">
+                    </Input>
                     <motion.div
                         animate={{ opacity: inputValue ? 1 : 0 }}
                         onClick={() => setInputValue("")}

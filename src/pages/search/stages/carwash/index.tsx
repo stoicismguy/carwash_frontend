@@ -18,8 +18,8 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
 
     const [response, setResponse] = useState<IResponse | null>(null);
 
-    const fetchList = async () => {
-        await api.get("carwashes/search/").then((res) => {
+    const fetchList = async (page?: number) => {
+        await api.get(`carwashes/search/?page=${page ? page : ''}`).then((res) => {
             setResponse(res.data);
         })
     }
@@ -40,7 +40,7 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
                 {/* <Filters /> */}
             </div>
             <CarwashList data={data} list={response?.results} choose={handleChoose} />
-            {response && <PaginationMenu current={response.current} total={response?.total_pages} />}
+            {response && <PaginationMenu current={response.current} total={response?.total_pages} fetch={fetchList} />}
         </div>
     )
 }

@@ -1,4 +1,3 @@
-import { useAuth } from "@/AuthContext";
 import Header from "@/shared/header";
 import React, { useEffect, useState } from "react";
 import BreadcrumbNavigation from "./BreadCrumbNavigation";
@@ -17,7 +16,7 @@ export interface IOrderData {
     carwash: string | null;
     autotype: "1" | "2" | "3" | null;
     department: string | null;
-    services: string | null;
+    services: IService[];
     payment?: string | null;
 }
 
@@ -26,6 +25,14 @@ export interface IPageProps {
     handleStage: (index: number) => void,
     data: IOrderData,
     changeData: (data: IOrderData, stage: number) => void
+}
+
+export interface IService {
+    id: number;
+    name: string;
+    price: number;
+    duration: number;
+    group: number;
 }
 
 
@@ -37,7 +44,7 @@ const Search = () => {
         carwash: null,
         autotype: null,
         department: null,
-        services: null,
+        services: [],
         payment: null
     })
 

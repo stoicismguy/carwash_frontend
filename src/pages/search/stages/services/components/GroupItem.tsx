@@ -1,27 +1,29 @@
 import { Button, Separator, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import { IOrderData } from "@/pages/search";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { IService } from "@/pages/search";
 
 
 interface IProps {
     item: any,
     choose: (value: any) => void,
-    data: IOrderData
+    services: IService[],
+    openDefault: boolean
 }
 
-const GroupItem = ({ item, choose, data }: IProps) => {
+const GroupItem = ({ item, choose, services, openDefault }: IProps) => {
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(openDefault);
 
     return (
         <div className="flex flex-col gap-0">
-            <div className="w-full bg-primary p-2 flex items-center justify-between" onClick={() => setOpen(!open)}>
+            <div className="w-full bg-primary pl-3 p-2 flex items-center justify-between" onClick={() => setOpen(!open)}>
                 <h1 className="text-xl font-semibold text-primary-foreground whitespace-nowrap truncate">{item.name}</h1>
                 <div className="flex gap-2 items-center">
-                    <div className="flex text-primary font-semibold bg-primary-foreground p-1 w-6 h-6 items-center justify-center rounded-full">{item.services.length}</div>
+                    <div className={cn("flex text-primary font-semibold bg-primary-foreground p-1 w-6 h-6 items-center text-[14px] justify-center rounded-full", { hidden: services.filter((s) => s.group === item.id).length === 0 })}>{services.filter((s) => s.group === item.id).length}</div>
                     <motion.div
                         initial={{ rotate: 0 }}
                         animate={{ rotate: open ? 180 : 0 }}
@@ -40,39 +42,26 @@ const GroupItem = ({ item, choose, data }: IProps) => {
                 <Table>
                     <TableHeader>
                         <TableRow className="text-muted">
+                            <TableHead className="w-[50px]"></TableHead>
                             <TableHead className="w-[200px] text-muted-foreground">Название</TableHead>
                             <TableHead className="text-muted-foreground">Цена</TableHead>
                             <TableHead className="text-right text-muted-foreground">Время</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {item.services.map((service: any) => (
-                            <TableRow key={service.id} className="h-11">
-                                <TableCell className="text-md">{service.name}</TableCell>
-                                <TableCell>₽{service.price}</TableCell>
-                                <TableCell className="text-right">30 мин</TableCell>
+                        {item.services.map((service: IService) => (
+                            <TableRow className="h-11" onClick={() => {
+                                choose(service)
+                                // console.log(service)
+                                }}>
+                                <TableCell className="text-md">{services.some((item) => item.id === service.id) ? <Check className="text-muted-foreground" /> : <Check className="text-muted" />}</TableCell>
+                                <TableCell className="text-md text-primary">{service.name}</TableCell>
+                                <TableCell className="text-primary">₽{service.price}</TableCell>
+                                <TableCell className="text-right text-primary">30 мин</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                {/* {item.services.map((service: any, index: number) => (
-                    <>
-                        <div className="w-full p-2 flex items-center justify-between h-11">
-                            <h1>{service.name}</h1>
-                            <div className="grid grid-cols-2 w-50">
-                                <div className="flex items-center justify-between">
-                                    <Separator orientation={"vertical"} style={{ width: "1px" }}/>
-                                    <h1>{service.price}</h1>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <Separator orientation="vertical"/>
-                                    <h1>{service.duration}</h1>
-                                </div>  
-                            </div>      
-                        </div>
-                        {index !== item.services.length - 1 && <Separator />}
-                    </>
-                ))} */}
             </motion.div>
         </div>
     )   

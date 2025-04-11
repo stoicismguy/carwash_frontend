@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { IPageProps } from "../..";
 import api from "@/api";
-import { ServicesList } from "./components";
+import { GroupItem, ServicesList } from "./components";
 import { Button, Skeleton } from "@/components/ui";
-import { ChevronRight, LoaderCircle } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { IService } from "@/pages/search";
 
 const Services = ({ page, handleStage, changeData, data }: IPageProps) => {
 
     const [list, setList] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [chosenServices, setChosenServices] = useState<IService[]>([]);
 
     const fetchList = async () => {
         setLoading(true);
@@ -23,9 +26,16 @@ const Services = ({ page, handleStage, changeData, data }: IPageProps) => {
         fetchList();
     }, [])
 
+    const toggleChooseId = (service: IService) => {
+        if (chosenServices.some((s) => s.id === service.id)) {
+            setChosenServices(chosenServices.filter((s) => s.id !== service.id));
+        } else {
+            setChosenServices([...chosenServices, service]);
+        }
+    }
+
     const handleChoose = ({ value }: any) => {
-        console.log(value);
-        changeData({...data, department: value }, page.stage);
+        changeData({...data, services: value }, page.stage);
         handleStage(page.stage + 1);
     }
     
@@ -43,9 +53,15 @@ const Services = ({ page, handleStage, changeData, data }: IPageProps) => {
             </div> : (
                 <>
                     {list.length === 0 && <h1 className="text-center text-muted-foreground mt-[10%] mb:mt-[60%]">Услуги не найдены</h1>}
-                    <ServicesList data={data} list={list} choose={handleChoose} />
-                    {list.length !== 0 && <Button className="h-[40px] mt-3 flex items-center" disabled={list.length === 0} onClick={() => handleStage(page.stage + 1)}>К оплате 
-                    <div className="flex text-primary font-semibold bg-primary-foreground p-1 w-6 h-6 items-center justify-center rounded-full">3</div>
+
+                    <div className="w-full flex flex-col mb:grid-cols-2 gap-4 mb:gap-2">
+                        {list.map((group, index) => (
+                            <GroupItem item={group} openDefault={index === 0} key={group.name} choose={toggleChooseId} services={chosenServices} />
+                        ))}
+                    </div>
+
+                    {list.length !== 0 && <Button className="h-[45px] mt-3 flex items-center" disabled={chosenServices.length === 0} onClick={() => handleStage(page.stage + 1)}>К оплате 
+                    <div className={cn("flex text-primary font-semibold bg-primary-foreground text-[14px] p-1 w-6 h-6 items-center justify-center rounded-full", { hidden: chosenServices.length === 0 })}>{chosenServices.length}</div>
                     <ChevronRight size={16} /></Button>}
                 </>
             )}
