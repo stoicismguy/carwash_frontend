@@ -42,24 +42,27 @@ const GroupItem = ({ item, choose, services, openDefault }: IProps) => {
                 <Table>
                     <TableHeader>
                         <TableRow className="text-muted">
-                            <TableHead className="w-[50px]"></TableHead>
-                            <TableHead className="w-[200px] text-muted-foreground">Название</TableHead>
+                            <TableHead className="w-[40px]"></TableHead>
+                            <TableHead className="w-[180px] text-muted-foreground">Название</TableHead>
                             <TableHead className="text-muted-foreground">Цена</TableHead>
+                            <TableHead className="text-muted-foreground w-[400px] text-left mb:hidden">Описание</TableHead>
                             <TableHead className="text-right text-muted-foreground">Время</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {item.services.map((service: IService) => (
-                            <TableRow className="h-11" onClick={() => {
+                        {item.services.map((service: IService) => {
+                            const date = new Date(`1970-01-01T${service.duration}Z`);
+                            return (<TableRow className="h-11" onClick={() => {
                                 choose(service)
                                 // console.log(service)
                                 }}>
                                 <TableCell className="text-md">{services.some((item) => item.id === service.id) ? <Check className="text-muted-foreground" /> : <Check className="text-muted" />}</TableCell>
-                                <TableCell className="text-md text-primary">{service.name}</TableCell>
+                                <TableCell style={{ maxWidth: "180px", textWrap: "wrap" }} className="text-md text-primary overflow-hidden text-ellipsis">{service.name}</TableCell>
                                 <TableCell className="text-primary">₽{service.price}</TableCell>
-                                <TableCell className="text-right text-primary">30 мин</TableCell>
-                            </TableRow>
-                        ))}
+                                <TableCell className="text-primary mb:hidden">{service.description}</TableCell>
+                                <TableCell className="text-right text-primary">{date.getMinutes()} мин</TableCell>
+                            </TableRow>)
+                            })}
                     </TableBody>
                 </Table>
             </motion.div>

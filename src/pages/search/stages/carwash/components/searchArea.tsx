@@ -6,11 +6,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CircleX, MapPin, Settings2, Star, X } from "lucide-react";
 
-// interface IProps {
-//     focused: boolean,
-//     inputValue: string,
-//     setInputValue: (value: string) => void
-// }
+interface IProps {
+    inputValue: string;
+    setInputValue: (value: string) => void;
+    fetch: (page?: number, inputValue?: string) => Promise<void>;
+}
 
 interface IFilter {
     name: string,
@@ -18,10 +18,10 @@ interface IFilter {
     checked: boolean
 }
 
-const SearchArea = () => {
+const SearchArea = ({ inputValue, setInputValue, fetch }: IProps) => {
 
     const [focused, setFocused] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+
     const filters: IFilter[] = [
         {
             name: "Рейтинг",
@@ -73,12 +73,20 @@ const SearchArea = () => {
                     <Input
                         onFocus={() => setFocused(true)}
                         onBlur={() => setFocused(false)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                fetch(1, inputValue);
+                            }
+                        }}
                         value={inputValue}
                         placeholder="Поиск автомоек" className="h-[45px] rounded-xl">
                     </Input>
                     <motion.div
                         animate={{ opacity: inputValue ? 1 : 0 }}
-                        onClick={() => setInputValue("")}
+                        onClick={() => {
+                            setInputValue("");
+                            fetch(1, "");
+                        }}
                         className="absolute right-3 top-1/2 -translate-y-1/2">
                         <CircleX className="text-primary" size={20} />
                     </motion.div>

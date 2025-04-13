@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui";
+import { Button, Drawer, DrawerClose, DrawerContent, DrawerTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui";
 import { CircleHelp, LogIn, LogOut, Menu } from "lucide-react";
 import AvatarHeader from "./avatar";
 import { IAuthContext, useAuth } from "@/AuthContext";
@@ -24,7 +24,12 @@ const Header = () => {
     const linkList: ILink[] = [
         {
             text: "FAQ",
-            img: <CircleHelp />,
+            img: <CircleHelp size={20} />,
+            link: "/faq"
+        },
+        {
+            text: "FAQ",
+            img: <CircleHelp size={20} />,
             link: "/faq"
         }
     ];
@@ -34,7 +39,7 @@ const Header = () => {
 
             <div className="h-full flex items-center">
                 {/* Для телефона бургер с выпадающей менюшкой */}
-                <DropdownMenu onOpenChange={() => {setOpen(!open)}}>
+                {/* <DropdownMenu onOpenChange={() => {setOpen(!open)}}>
                     <DropdownMenuTrigger className="sm:hidden cursor-pointer" asChild>
                         <motion.div initial={{ rotate: 0 }} animate={{ rotate: open ? 90 : 0 }} transition={{ duration: 0.2 }}>
                             <Menu />
@@ -45,7 +50,25 @@ const Header = () => {
                             <DropdownMenuItem onClick={() => naviage(link.link)}>{link.img}{link.text}</DropdownMenuItem>
                         ))}
                     </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
+
+                <Drawer direction="left">
+                    <DrawerTrigger className="sm:hidden cursor-pointer" asChild>
+                        <Menu />
+                    </DrawerTrigger>
+                    <DrawerContent className="flex flex-col items-center !w-[250px]">
+                        <div className="flex items-center h-[55px] w-full px-5">
+                        <DrawerClose asChild>
+                            <Menu />
+                        </DrawerClose>
+                        </div>
+                        <div className="flex flex-col gap-0 w-full">
+                            {linkList.map((link, index) => (
+                                <div className="flex items-center gap-2 px-3 pl-4 py-3 border-b-1" onClick={() => naviage(link.link)}>{link.img}{link.text}</div>
+                            ))}
+                        </div>
+                    </DrawerContent>
+                </Drawer>
 
                 {/* Для компа */}
                 <div className="h-full w-full flex items-center gap-4 mb:hidden">

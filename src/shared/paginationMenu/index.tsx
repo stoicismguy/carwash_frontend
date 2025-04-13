@@ -4,11 +4,12 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 interface IProps {
     current: number;
     total: number;
-    fetch: (page?: number) => Promise<void>;
+    fetch: (page?: number, inputValue?: string) => Promise<void>;
+    inputValue?: string
   }
   
   
-const PaginationMenu = ({ current, total, fetch }: IProps) => {
+const PaginationMenu = ({ current, total, fetch, inputValue }: IProps) => {
     const getPageNumbers = () => {
         const pages = [];
         const delta = 2; 
@@ -31,13 +32,13 @@ const PaginationMenu = ({ current, total, fetch }: IProps) => {
             {/* Кнопка "Предыдущая" */}
             {current > 1 && (
                 <PaginationItem>
-                    <PaginationPrevious onClick={() => fetch(current - 1)} />
+                    <PaginationPrevious onClick={() => fetch(current - 1, inputValue)} />
                 </PaginationItem>
             )}
     
             {/* Первая страница */}
             <PaginationItem>
-                <PaginationLink isActive={current === 1} onClick={() => fetch(1)}>1</PaginationLink>
+                <PaginationLink isActive={current === 1} onClick={() => fetch(1, inputValue)}>1</PaginationLink>
             </PaginationItem>
     
             {/* Многоточие перед основным блоком */}
@@ -46,7 +47,7 @@ const PaginationMenu = ({ current, total, fetch }: IProps) => {
             {/* Основные страницы */}
             {pages.map((page) => (
                 <PaginationItem key={page}>
-                <PaginationLink isActive={page === current} onClick={() => fetch(page)}>
+                <PaginationLink isActive={page === current} onClick={() => fetch(page, inputValue)}>
                     {page}
                 </PaginationLink>
                 </PaginationItem>
@@ -58,7 +59,7 @@ const PaginationMenu = ({ current, total, fetch }: IProps) => {
             {/* Последняя страница */}
             {total > 1 && (
                 <PaginationItem>
-                <PaginationLink isActive={current === total} onClick={() => fetch(total)}>
+                <PaginationLink isActive={current === total} onClick={() => fetch(total, inputValue)}>
                     {total}
                 </PaginationLink>
                 </PaginationItem>
@@ -67,7 +68,7 @@ const PaginationMenu = ({ current, total, fetch }: IProps) => {
             {/* Кнопка "Следующая" */}
             {current < total && (
                 <PaginationItem>
-                <PaginationNext onClick={() => fetch(current + 1)} />
+                <PaginationNext onClick={() => fetch(current + 1, inputValue)} />
                 </PaginationItem>
             )}
             </PaginationContent>

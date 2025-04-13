@@ -63,3 +63,4 @@ export {
     PaginationNext,
     PaginationPrevious,
     } from "./pagination"
+export { Calendar } from "./calendar";

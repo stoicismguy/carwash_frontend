@@ -2,7 +2,7 @@ import Header from "@/shared/header";
 import React, { useEffect, useState } from "react";
 import BreadcrumbNavigation from "./BreadCrumbNavigation";
 import { motion } from "framer-motion";
-import { Carwash, Department, Services, Payment, Autotype } from "./stages";
+import { Carwash, Department, Services, Payment, Autotype, Datetime } from "./stages";
 
 
 interface IPage {
@@ -17,6 +17,7 @@ export interface IOrderData {
     autotype: "1" | "2" | "3" | null;
     department: string | null;
     services: IService[];
+    time: string | null;
     payment?: string | null;
 }
 
@@ -33,6 +34,7 @@ export interface IService {
     price: number;
     duration: number;
     group: number;
+    description: string;
 }
 
 
@@ -45,6 +47,7 @@ const Search = () => {
         autotype: null,
         department: null,
         services: [],
+        time: "",
         payment: null
     })
 
@@ -53,7 +56,8 @@ const Search = () => {
         { name: "Тип автомобиля", page: Autotype, dataname: "autotype", stage: 1 },
         { name: "Филиал", page: Department, dataname: "department", stage: 2 },
         { name: "Услуги", page: Services, dataname: "services", stage: 3 },
-        { name: "Оплата", page: Payment, dataname: "payment", stage: 4 }
+        { name: "Время", page: Datetime, dataname: "time", stage: 4 },
+        { name: "Оплата", page: Payment, dataname: "payment", stage: 5 }
     ]
 
     const handleStageSwitch = (index: number) => {

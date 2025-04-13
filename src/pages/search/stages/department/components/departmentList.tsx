@@ -18,8 +18,11 @@ const DepartmentList = ({ list, choose, data }: IProps) => {
                 key={item.name}
                 className="w-full rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow flex flex-col justify-between items-start border min-h-[250px]"
                 >
-                <div className="flex flex-col gap-2 flex-grow-0 flex-shrink-0">
-                    <h1 className="text-2xl font-semibold text-primary whitespace-nowrap truncate">{item.address}</h1>
+                <div className="flex flex-col gap-1 flex-grow-0 flex-shrink-0">
+                    <div className="flex flex-col gap-0">
+                        <h1 className="text-2xl font-semibold text-primary whitespace-nowrap truncate">{item.address}</h1>
+                        <p className="text-md text-primary line-clamp-2">{item.name}</p>
+                    </div>
                     <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>
                     {item.logo && (
                     <img

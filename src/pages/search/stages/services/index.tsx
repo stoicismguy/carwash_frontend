@@ -11,7 +11,7 @@ const Services = ({ page, handleStage, changeData, data }: IPageProps) => {
 
     const [list, setList] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [chosenServices, setChosenServices] = useState<IService[]>([]);
+    const [chosenServices, setChosenServices] = useState<IService[]>(data.services || []);
 
     const fetchList = async () => {
         setLoading(true);
@@ -60,7 +60,7 @@ const Services = ({ page, handleStage, changeData, data }: IPageProps) => {
                         ))}
                     </div>
 
-                    {list.length !== 0 && <Button className="h-[45px] mt-3 flex items-center" disabled={chosenServices.length === 0} onClick={() => handleStage(page.stage + 1)}>К оплате 
+                    {list.length !== 0 && <Button className="h-[45px] mt-3 flex items-center" disabled={chosenServices.length === 0} onClick={() => handleChoose({ value: chosenServices })}>Выбрать время 
                     <div className={cn("flex text-primary font-semibold bg-primary-foreground text-[14px] p-1 w-6 h-6 items-center justify-center rounded-full", { hidden: chosenServices.length === 0 })}>{chosenServices.length}</div>
                     <ChevronRight size={16} /></Button>}
                 </>

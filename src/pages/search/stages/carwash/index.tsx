@@ -17,9 +17,10 @@ interface IResponse {
 const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
 
     const [response, setResponse] = useState<IResponse | null>(null);
+    const [inputValue, setInputValue] = useState("");
 
-    const fetchList = async (page?: number) => {
-        await api.get(`carwashes/search/?page=${page ? page : ''}`).then((res) => {
+    const fetchList = async (page?: number, inputValue?: string) => {
+        await api.get(`carwashes/search/?page=${page ? page : ''}&${inputValue ? `&name=${inputValue}` : ''}`).then((res) => {
             setResponse(res.data);
         })
     }
@@ -36,11 +37,18 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
     return (
         <div className="w-full px-40 pb-10 flex flex-col gap-5 mb:px-5">
             <div className="w-full flex flex-col gap-2 mb:gap-1">
-                <SearchArea />
+                <SearchArea inputValue={inputValue} setInputValue={setInputValue} fetch={fetchList} />
                 {/* <Filters /> */}
             </div>
-            <CarwashList data={data} list={response?.results} choose={handleChoose} />
-            {response && <PaginationMenu current={response.current} total={response?.total_pages} fetch={fetchList} />}
+            {response?.results.length ?
+                <>
+                    <CarwashList data={data} list={response?.results} choose={handleChoose} />
+                    {response && <PaginationMenu current={response.current} total={response?.total_pages} fetch={fetchList} inputValue={inputValue} />}
+                </>
+                : 
+                <div className="w-full flex items-center justify-center mt-[40%] text-muted-foreground">По вашему запросу ничего не найдено</div>
+            }
+            
         </div>
     )
 }
