@@ -64,3 +64,17 @@ export {
     PaginationPrevious,
     } from "./pagination"
 export { Calendar } from "./calendar";
+export { Badge, badgeVariants } from "./badge";
+export { Textarea } from "./textarea";
+export {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogOverlay,
+    DialogPortal,
+    DialogTitle,
+    DialogTrigger,
+    } from "./dialog";

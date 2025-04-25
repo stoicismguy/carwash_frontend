@@ -7,7 +7,7 @@ interface ILogin {
     password: string
 }
 
-interface IUser {
+export interface IUser {
     name: string,
     user_type: string,
     phone_number: string

@@ -9,6 +9,8 @@ const Register = lazy(() => import("@/pages/register"));
 const Search = lazy(() => import("@/pages/search"));
 const FAQ = lazy(() => import("@/pages/faq"));
 const Profile = lazy(() => import("@/pages/profile"));
+const ConfCarwash = lazy(() => import("@/pages/conf_carwash"));
+const ConfBranch = lazy(() => import("@/pages/conf_branch"));
 // const Login = () => <div>Login</div>;
 // const Register = () => <div>Register</div>;
 
@@ -45,5 +47,13 @@ export const PrivateRoutes: Route[] = [
     {
         path: URLS.PROFILE,
         element: <Profile />,
+    },
+    {
+        path: URLS.CONF_CARWASH,
+        element: <ConfCarwash />,
+    },
+    {
+        path: URLS.CONF_BRANCH,
+        element: <ConfBranch />,
     }
 ]

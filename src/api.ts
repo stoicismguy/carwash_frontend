@@ -34,7 +34,7 @@ api.interceptors.response.use(
                 const refreshToken = localStorage.getItem("refreshToken");
                 
                 // Запрос на обновление токена
-                const response = await axios.post("http://127.0.0.1:8000/api/token/refresh/", {
+                const response = await axios.post("http://127.0.0.1:8000/api/users/token/refresh/", {
                     refresh: refreshToken
                 });
                 
@@ -48,10 +48,8 @@ api.interceptors.response.use(
                 // Повторяем исходный запрос с новым токеном
                 return api(originalRequest);
             } catch (refreshError) {
-                // Если обновление токена не удалось, можно очистить токены и перенаправить на логин
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
-                // Здесь можно добавить редирект на страницу входа
+                // localStorage.removeItem("accessToken");
+                // localStorage.removeItem("refreshToken");
                 return Promise.reject(refreshError);
             }
         }
