@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
     baseURL: "http://127.0.0.1:8000/api/",
@@ -48,8 +49,11 @@ api.interceptors.response.use(
                 // Повторяем исходный запрос с новым токеном
                 return api(originalRequest);
             } catch (refreshError) {
-                // localStorage.removeItem("accessToken");
-                // localStorage.removeItem("refreshToken");
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("user");
+                const navigate = useNavigate();
+                navigate("/login");
                 return Promise.reject(refreshError);
             }
         }

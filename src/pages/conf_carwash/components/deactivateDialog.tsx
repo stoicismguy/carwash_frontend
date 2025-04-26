@@ -30,7 +30,7 @@ const DeactivateDialog = ({carWash, handleToggleActive }: IProps) => {
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader>Вы уверены?</DialogHeader>
+                <DialogHeader className="font-semibold">Вы уверены?</DialogHeader>
                 <DialogDescription>
                     {carWash.is_active ? "Деактивированный филиал НЕ будет отображаться в поиске, но имеющиеся записи не будут отменены" : "Активированный филиал будет отображаться в поиске и сможет получать заказы"}
                 </DialogDescription>
