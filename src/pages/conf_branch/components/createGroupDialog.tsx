@@ -37,12 +37,13 @@ const CreateGroupDialog = ({ branch }: IProps) => {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
+                size={"lg"}
                 variant="outline">
-                + Создать группу
+                Создать группу
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader className="font-semibold">Создать группу услуг</DialogHeader>
+                <DialogHeader className="font-semibold text-xl">Создать группу услуг</DialogHeader>
                 <div className="grid gap-2 py-1">
                     <Label htmlFor="name" className="text-sm font-medium">Название</Label>
                     <Input

@@ -8,6 +8,8 @@ import api from "@/api";
 import Header from "@/shared/header";
 import ServiceDialog from "./components/serviceDialog";
 import CreateGroupDialog from "./components/createGroupDialog";
+import CreateServiceDialog from "./components/createServiceDialog";
+
 
 export interface IBranch {
     id: number;
@@ -102,7 +104,7 @@ const ConfBranch = () => {
                 <div className="max-w-4xl mx-auto space-y-6">
                     {/* Заголовок филиала */}
                     <div className="space-y-2">
-                        <h1 className="text-3xl font-bold mb:text-2xl">{branch.name}</h1>
+                        <h1 className="text-3xl font-bold mb:text-2xl">{branch.address}</h1>
                         <div className="flex items-center gap-2">
                             <Badge
                                 className={`mb:text-sm text-[14px] ${
@@ -147,6 +149,13 @@ const ConfBranch = () => {
                             </div>
                             <Separator />
                             <div>
+                                <p className="text-sm text-muted-foreground">Описание</p>
+                                <p className="mt-1">
+                                    {branch.description ? branch.description : "Нет описания"}
+                                </p>
+                            </div>
+                            <Separator />
+                            <div>
                                 <p className="text-sm text-muted-foreground">Дата создания</p>
                                 <p className="mt-1">
                                     {new Date(branch.created_at).toLocaleDateString("ru-RU", {
@@ -169,19 +178,23 @@ const ConfBranch = () => {
                     </div>
 
                     {/* Конфигуратор услуг */}
-                    <div className="bg-background border rounded-lg py-6 mb:py-4">
-                        <div className="flex items-center px-6 mb:px-4 justify-between mb-3">
+                    <div className="bg-background rounded-lg py-3 mb:py-4">
+                        <div className="flex items-center justify-between mb-3">
                             <div className="text-xl font-semibold mb:text-lg">Услуги</div>
-                            <CreateGroupDialog branch={branch} />
+                            <div className="flex gap-2">
+                                <CreateGroupDialog branch={branch} />
+                                <CreateServiceDialog branch={branch} />
+                            </div>
+                            
                         </div>
                         {serviceGroups.length === 0 ? (
                             <p className="text-muted-foreground px-6 mb:px-2">Услуги отсутствуют</p>
                         ) : (
-                            <div className="px-6 mb:px-4 space-y-2">
+                            <div className="space-y-2">
                                 {serviceGroups.map((group) => (
                                     <div key={group.id}>
                                         <div
-                                            className="w-full bg-primary pl-3 p-2 flex items-center justify-between"
+                                            className="w-full bg-primary rounded-sm pl-3 p-2 flex items-center justify-between"
                                             onClick={() => toggleGroup(group.id)}
                                         >
                                             <div className="flex items-center gap-2">

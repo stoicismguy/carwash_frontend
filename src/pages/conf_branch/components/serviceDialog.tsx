@@ -12,12 +12,18 @@ const ServiceDialog = ({ service }: IProps) => {
     const [data, setData] = useState<any>(service);
     const date = new Date(`1970-01-01T${service.duration}Z`);
 
+    const [open, setOpen] = useState(false);
+
     const handleSave = async () => {
         await api.patch(`services/groups/${service.id}/`, data);
     }
 
+    const handleDelete = async () => {
+        await api.delete(`services/groups/${service.id}/`);
+    }
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <TableRow key={service.id} className="h-11">
                     <TableCell
@@ -37,7 +43,7 @@ const ServiceDialog = ({ service }: IProps) => {
                 </TableRow>
             </DialogTrigger>
             <DialogContent>
-            <DialogHeader className="font-semibold">Изменить услугу</DialogHeader>
+            <DialogHeader className="font-semibold text-xl">Изменить услугу</DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
                         <Label htmlFor="name" className="text-sm font-medium">Название</Label>
@@ -87,9 +93,8 @@ const ServiceDialog = ({ service }: IProps) => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <DialogClose asChild>
-                        <Button size={"lg"} onClick={handleSave}>Сохранить</Button>
-                    </DialogClose>
+                    <Button variant={"destructive"} className="w-23 mb:w-full" size={"lg"} onClick={handleDelete}>Удалить</Button>
+                    <Button size={"lg"} className="w-35 mb:w-full" onClick={handleSave}>Сохранить</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

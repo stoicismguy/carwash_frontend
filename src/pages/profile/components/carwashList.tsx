@@ -20,8 +20,8 @@ const CarwashList = () => {
     }, []);
 
     return (
-        <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">Предприятия</h3>
+        <div className="mt-3">
+            {/* <h3 className="text-lg font-semibold mb-2">Предприятия</h3> */}
             <div className="grid gap-4">
                 {carwashes.map((business) => (
                     <button

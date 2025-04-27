@@ -9,6 +9,8 @@ import { Pencil, Save } from "lucide-react";
 import Header from "@/shared/header";
 import { useAuth, IUser } from "@/AuthContext";
 import { CarwashList } from "./components";
+import { formatPhoneNumber } from "@/shared/utils";
+import { useMask } from "@react-input/mask";
 
 // Интерфейс для предприятия
 interface IBusiness {
@@ -18,9 +20,13 @@ interface IBusiness {
 }
 
 const Profile = () => {
-const { user } = useAuth(); // Получаем пользователя из useAuth
-const [isEditing, setIsEditing] = useState(false);
-const [userData, setUserData] = useState<IUser>(user);
+    const { user } = useAuth(); // Получаем пользователя из useAuth
+    const [isEditing, setIsEditing] = useState(false);
+    const [userData, setUserData] = useState<IUser>(user);
+    const inputRef = useMask({
+            mask: "+7 (___) ___-__-__",
+            replacement: { _: /\d/ },
+        }); 
 
 // Пример данных для истории записей
 const washHistory = [
@@ -100,9 +106,12 @@ return (
                         <TabsTrigger value="info" className="text-base">
                         Информация
                         </TabsTrigger>
-                        <TabsTrigger value="history" className="text-base">
+                        {userData.user_type === "business" ? <TabsTrigger value="carwashes" className="text-base">
+                            Предприятия
+                        </TabsTrigger> : <TabsTrigger value="history" className="text-base">
                             История
-                        </TabsTrigger>
+                        </TabsTrigger>}
+                        
                     </TabsList>
                     <TabsContent value="info" className="mt-4">
                         <div className="grid gap-4">
@@ -123,7 +132,9 @@ return (
                             id="phone_number"
                             name="phone_number"
                             className="h-12 mb:h-11"
-                            value={userData.phone_number}
+                            placeholder="+7 (___) ___-__-__"
+                            value={formatPhoneNumber(userData.phone_number)}
+                            ref={inputRef}
                             onChange={handleInputChange}
                             disabled={!isEditing}
                             />
@@ -176,12 +187,11 @@ return (
                         </ul>
                         </div>
                     </TabsContent>
+                    <TabsContent value="carwashes" className="mt-4">
+                        <CarwashList />
+                    </TabsContent>
                     </Tabs>
                 </div>
-                {/* Секция предприятий */}
-                {userData.user_type === "business" && (
-                    <CarwashList />
-                )}
             </div>
             </div>
         </div>

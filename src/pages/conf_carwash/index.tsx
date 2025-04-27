@@ -6,6 +6,8 @@ import api from "@/api";
 import Header from "@/shared/header";
 import { CreateBranchDialog, DeactivateDialog } from "./components";
 import { useMask } from "@react-input/mask";
+import CarwashDialog from "./components/carwashDialog";
+import { formatPhoneNumber } from "@/shared/utils";
 
 export interface ICarWash {
     id: number;
@@ -42,8 +44,6 @@ const ConfCarwash = () => {
     const { id } = useParams<{ id: string }>(); // Получаем id из URL
     const [carWash, setCarWash] = useState<ICarWash | null>(null);
     const [branches, setBranches] = useState<IBranch[]>([]);
-    const [isEditing, setIsEditing] = useState(false);
-    const [editData, setEditData] = useState<{ phone_number: string; description: string; email: string; website: string } | null>(null);
     const navigate = useNavigate();
 
     const inputRef = useMask({
@@ -51,65 +51,19 @@ const ConfCarwash = () => {
         replacement: { _: /\d/ },
     });
 
+    const fetchData = async () => {
+        // Загрузка автомойки
+        const carWashResponse = await api.get(`carwashes/${id}/`);
+        setCarWash(carWashResponse.data);
+        // Загрузка филиалов
+        const branchesResponse = await api.get(`carwashes/${id}/branches/`);
+        setBranches(branchesResponse.data.results);
+    };
+
     // Загрузка данных автомойки и филиалов
     useEffect(() => {
-        const fetchData = async () => {
-            // Загрузка автомойки
-            const carWashResponse = await api.get(`carwashes/${id}/`);
-            setCarWash(carWashResponse.data);
-            // Загрузка филиалов
-            const branchesResponse = await api.get(`carwashes/${id}/branches/`);
-            setBranches(branchesResponse.data.results);
-        };
         fetchData();
     }, [id]);
-
-    // Обработчик начала редактирования
-    const handleEdit = () => {
-        if (carWash) {
-            setEditData({
-                phone_number: carWash.phone_number,
-                description: carWash.description,
-                email: carWash.email,
-                website: carWash.website || "",
-            });
-            setIsEditing(true);
-        }
-    };
-
-    // Обработчик изменения полей
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target;
-        setEditData((prev) => (prev ? { ...prev, [name]: value } : prev));
-    };
-
-    // Обработчик сохранения
-    const handleSave = async () => {
-        if (carWash && editData) {
-            if (!editData.phone_number.trim()) {
-                return;
-            }
-            // Обновление данных на сервере
-            await api.patch(`carwashes/${id}/`, {
-                phone_number: editData.phone_number,
-                description: editData.description,
-                email: editData.email,
-                website: editData.website || null,
-            });
-            // Обновление локальных данных
-            setCarWash({
-                ...carWash,
-                phone_number: editData.phone_number,
-                description: editData.description,
-                email: editData.email,
-                website: editData.website || null,
-            });
-            setIsEditing(false);
-            setEditData(null);
-        }
-    };
 
     // Обработчик переключения активности
     const handleToggleActive = async () => {
@@ -163,83 +117,43 @@ const ConfCarwash = () => {
                         <div className="text-xl font-semibold mb-4 mb:text-lg">Информация об автомойке</div>
                         <div className="space-y-4">
                             <div className="grid gap-4 md:grid-cols-2">
-                                <div className="flex items-center gap-2">
-                                    <Phone className="h-5 w-5 text-muted-foreground" />
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Телефон</p>
-                                        {isEditing ? (
-                                            <Input
-                                                name="phone_number"
-                                                ref={inputRef}
-                                                placeholder="+7 (___) ___-__-__"
-                                                value={editData?.phone_number || ""}
-                                                onChange={handleInputChange}
-                                                className="mt-1 h-10 mb:h-9"
-                                            />
-                                        ) : (
-                                            <p className="font-medium">{"+" + carWash.phone_number}</p>
-                                        )}
+                                {carWash.phone_number && (
+                                    <div className="flex items-start gap-2">
+                                        <Phone className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground leading-none">Телефон</p>
+                                            <p className="font-medium leading-8">{formatPhoneNumber(carWash.phone_number)}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Mail className="h-5 w-5 text-muted-foreground" />
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Email</p>
-                                        {isEditing ? (
-                                            <Input
-                                                name="email"
-                                                value={editData?.email || ""}
-                                                onChange={handleInputChange}
-                                                className="mt-1 h-10 mb:h-9"
-                                            />
-                                        ) : (
-                                            <p className={`font-medium ${!carWash.email && "text-gray-600"}`}>{carWash.email || "Не указан"}</p>
-                                        )}
+                                )}
+                                {carWash.email && (
+                                    <div className="flex items-start gap-2">
+                                        <Mail className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground leading-none">Email</p>
+                                            <p className="font-medium leading-8">{carWash.email}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Globe className="h-5 w-5 text-muted-foreground" />
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Веб-сайт</p>
-                                        {isEditing ? (
-                                            <Input
-                                                name="website"
-                                                value={editData?.website || ""}
-                                                onChange={handleInputChange}
-                                                className="mt-1 h-10 mb:h-9"
-                                            />
-                                        ) : (
-                                            <p className="font-medium">
-                                                {carWash.website ? (
-                                                    <a
-                                                        href={carWash.website}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-primary hover:underline"
-                                                    >
-                                                        {carWash.website}
-                                                    </a>
-                                                ) : (
-                                                    <p className="font-medium text-gray-600">Не указан</p>
-                                                )}
-                                            </p>
-                                        )}
+                                )}
+                                {carWash.website && (
+                                    <div className="flex items-start gap-2">
+                                        <Globe className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground leading-none">Веб-сайт</p>
+                                            <a
+                                                href={carWash.website}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-primary font-medium hover:underline leading-8"
+                                            >{carWash.website}</a>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                             <Separator />
                             <div>
                                 <p className="text-sm text-muted-foreground">Описание</p>
-                                {isEditing ? (
-                                    <Textarea
-                                        name="description"
-                                        value={editData?.description || ""}
-                                        onChange={handleInputChange}
-                                        className="mt-1 min-h-[100px]"
-                                    />
-                                ) : (
-                                    <p className="mt-1 whitespace-pre-wrap">{carWash.description}</p>
-                                )}
+                                <p className="mt-1 whitespace-pre-wrap">{carWash.description}</p>
                             </div>
                             <Separator />
                             <div>
@@ -258,30 +172,14 @@ const ConfCarwash = () => {
                     {/* Действия */}
                     <div className="flex justify-end mb:flex-col gap-2 mb-3">
                         <DeactivateDialog carWash={carWash} handleToggleActive={handleToggleActive} />
-                        <Button
-                            size="lg"
-                            className="mb:w-full"
-                            onClick={isEditing ? handleSave : handleEdit}
-                        >
-                            {isEditing ? (
-                                <>
-                                    <Save className="mr-2 h-4 w-4" />
-                                    Сохранить
-                                </>
-                            ) : (
-                                <>
-                                    <Settings className="mr-2 h-4 w-4" />
-                                    Настроить автомойку
-                                </>
-                            )}
-                        </Button>
+                        <CarwashDialog carwash={carWash} refetch={fetchData} />
                     </div>
 
                     {/* Список филиалов */}
                     <div className="bg-background border rounded-lg py-6 mb:py-4">
                         <div className="flex items-center px-6 mb:px-4 justify-between mb-3">
                             <div className="text-xl font-semibold mb:text-lg">Филиалы</div>
-                            <CreateBranchDialog carwash={carWash} />
+                            <CreateBranchDialog carwash={carWash} refetch={fetchData} />
                         </div>
                         
                         {branches.length === 0 ? (
@@ -299,14 +197,20 @@ const ConfCarwash = () => {
                                                         {branch.rating}
                                                     </div>
                                                     <div>
-                                                        <p className="font-semibold">{branch.address}</p>
+                                                        <div className="flex gap-2 items-center">
+                                                            <p className="font-semibold">{branch.address}</p>
+                                                            <Badge className={`mb:text-sm text-[14px] ${
+                                                                branch.is_active ? "bg-green-500 text-white" : "bg-gray-500 text-white"
+                                                            }`}>{branch.is_active ? "Активен" : "Не активен"}</Badge>
+                                                        </div>
+                                                        
                                                         <p className="text-sm text-muted-foreground">{branch.name}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <ChevronRight size={25} strokeWidth={1.3} />
                                         </div>
-                                        {index < branches.length - 1 && <Separator className="my-1 mb:my-1" />}
+                                        {index < branches.length - 1 && <div className="px-6"><Separator className="my-1 mb:my-1" /></div>}
                                     </div>
                                 ))}
                             </div>
