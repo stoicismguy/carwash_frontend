@@ -9,6 +9,9 @@ import Header from "@/shared/header";
 import ServiceDialog from "./components/serviceDialog";
 import CreateGroupDialog from "./components/createGroupDialog";
 import CreateServiceDialog from "./components/createServiceDialog";
+import DeactivateBranchDialog from "./components/deactivateDialog";
+import { formatPhoneNumber } from "@/shared/utils";
+import EditBranchDialog from "./components/editBranchDialog";
 
 
 export interface IBranch {
@@ -52,16 +55,18 @@ const ConfBranch = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [openGroups, setOpenGroups] = useState<{ [key: number]: boolean }>({});
 
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        const branchResponse = await api.get(`carwashes/branches/${id}/`);
+        setBranch(branchResponse.data);
+        const servicesResponse = await api.get(`services/${id}/`);
+        setServiceGroups(servicesResponse.data);
+        setIsLoading(false);
+    };
+
     // Загрузка данных филиала и услуг
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            const branchResponse = await api.get(`carwashes/branches/${id}/`);
-            setBranch(branchResponse.data);
-            const servicesResponse = await api.get(`services/${id}/`);
-            setServiceGroups(servicesResponse.data);
-            setIsLoading(false);
-        };
         fetchData();
     }, [id]);
 
@@ -69,7 +74,7 @@ const ConfBranch = () => {
     const handleToggleActive = async () => {
         if (branch) {
             const newStatus = !branch.is_active;
-            await api.patch(`branches/${id}/`, {
+            await api.patch(`carwashes/branches/${id}/`, {
                 is_active: newStatus,
             });
             setBranch({ ...branch, is_active: newStatus });
@@ -136,7 +141,7 @@ const ConfBranch = () => {
                                     <Phone className="h-5 w-5 text-muted-foreground" />
                                     <div>
                                         <p className="text-sm text-muted-foreground">Телефон</p>
-                                        <p className="font-medium">{branch.phone_number}</p>
+                                        <p className="font-medium">{formatPhoneNumber(branch.phone_number)}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -170,25 +175,21 @@ const ConfBranch = () => {
 
                     {/* Действия */}
                     <div className="flex justify-end mb:flex-col gap-2 mb-3">
-                        {/* <DeactivateDialog branch={branch} handleToggleActive={handleToggleActive} /> */}
-                        <Button size="lg" className="mb:w-full">
-                            <Settings className="mr-2 h-4 w-4" />
-                            Настроить филиал
-                        </Button>
+                        <DeactivateBranchDialog carWash={branch} handleToggleActive={handleToggleActive} />
+                        <EditBranchDialog branch={branch} refetch={fetchData} />
                     </div>
 
                     {/* Конфигуратор услуг */}
                     <div className="bg-background rounded-lg py-3 mb:py-4">
-                        <div className="flex items-center justify-between mb-3">
-                            <div className="text-xl font-semibold mb:text-lg">Услуги</div>
-                            <div className="flex gap-2">
+                        <div className="flex items-center justify-between mb-3 mb:flex-col mb:w-full">
+                            <p className="text-xl font-semibold mb:text-lg mb:mb-1">Услуги</p>
+                            <div className="flex gap-2 mb:flex-col mb:w-full">
                                 <CreateGroupDialog branch={branch} />
-                                <CreateServiceDialog branch={branch} />
+                                <CreateServiceDialog branch={branch} groups={serviceGroups} refetch={fetchData} />
                             </div>
-                            
                         </div>
                         {serviceGroups.length === 0 ? (
-                            <p className="text-muted-foreground px-6 mb:px-2">Услуги отсутствуют</p>
+                            <p className="text-muted-foreground mb:text-center mb:mt-5">Услуги отсутствуют</p>
                         ) : (
                             <div className="space-y-2">
                                 {serviceGroups.map((group) => (

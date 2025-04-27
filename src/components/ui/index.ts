@@ -78,3 +78,14 @@ export {
     DialogTitle,
     DialogTrigger,
     } from "./dialog";
+export {
+    Command,
+    CommandDialog,
+    CommandInput,
+    CommandList,
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+    CommandShortcut,
+    CommandSeparator,
+    } from "./command"

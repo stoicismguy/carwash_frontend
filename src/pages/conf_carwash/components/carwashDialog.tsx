@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogTrigger, DialogContent, DialogHeader, Label, Input, Textarea, DialogFooter } from "@/components/ui";
-import { Globe, Loader2, Mail, Phone, Settings } from "lucide-react";
+import { Globe, Loader2, Mail, Pencil, Phone, Settings } from "lucide-react";
 import { ICarWash } from "..";
 import { useState } from "react";
 import { useMask } from "@react-input/mask";
@@ -66,8 +66,8 @@ const CarwashDialog = ({ carwash, refetch }: IProps) => {
                     size="lg"
                     className="mb:w-full"
                     >
-                    <Settings className="mr-2 h-4 w-4" />
-                    Настроить автомойку
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Редактировать
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[625px] mb:w-full mb:max-w-full">
@@ -132,7 +132,7 @@ const CarwashDialog = ({ carwash, refetch }: IProps) => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" className="w-31" size={"lg"} onClick={handleSave}>{loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Сохранить"}</Button>
+                    <Button type="submit" className="w-31" size={"lg"} onClick={handleSave}>{loading ? <Loader2 className="animate-spin" /> : "Сохранить"}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

@@ -7,7 +7,7 @@ interface IProps {
 }
 
 
-const DeactivateDialog = ({carWash, handleToggleActive }: IProps) => {
+const DeactivateBranchDialog = ({carWash, handleToggleActive }: IProps) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -32,7 +32,7 @@ const DeactivateDialog = ({carWash, handleToggleActive }: IProps) => {
             <DialogContent>
                 <DialogHeader className="font-semibold text-xl">Вы уверены?</DialogHeader>
                 <DialogDescription>
-                    {carWash.is_active ? "Деактивированное предприятие и его филиалы НЕ будет отображаться в поиске" : "Активированное предприятие будет отображаться в поиске и сможет получать заказы"}
+                    {carWash.is_active ? "Деактивированный филиал НЕ будет отображаться в поиске, но имеющиеся записи не будут отменены" : "Активированный филиал будет отображаться в поиске и сможет получать заказы"}
                 </DialogDescription>
                 <DialogFooter>
                     <DialogClose asChild>
@@ -62,4 +62,4 @@ const DeactivateDialog = ({carWash, handleToggleActive }: IProps) => {
     )
 }
 
-export default DeactivateDialog;
+export default DeactivateBranchDialog;

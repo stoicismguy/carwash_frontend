@@ -1,7 +1,9 @@
 import { Button, Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Input, Label, TableCell, TableRow, Textarea } from "@/components/ui";
-import { Edit3 } from "lucide-react";
+import { Edit3, Loader2 } from "lucide-react";
 import { useState } from "react";
 import api from "@/api";
+import { set } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface IProps {
     service: any
@@ -11,11 +13,38 @@ const ServiceDialog = ({ service }: IProps) => {
 
     const [data, setData] = useState<any>(service);
     const date = new Date(`1970-01-01T${service.duration}Z`);
-
+    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [errors, setErrors] = useState<string[]>([]);
+
+    const validateData = (data: any) => {
+        const errors: string[] = [];
+        if (!data.name) {
+            errors.push("name");
+        }
+        if (!data.price) {
+            errors.push("price");
+        }
+        if (!data.duration) {
+            errors.push("duration");
+        }
+        setErrors(errors);
+        return errors.length === 0;
+    }
 
     const handleSave = async () => {
-        await api.patch(`services/groups/${service.id}/`, data);
+        setLoading(true);
+        setErrors([]);
+        if (!validateData(data)) {
+            setLoading(false);
+            return;
+        };
+        await api.patch(`services/groups/${service.id}/`, data).then(() => {
+            setErrors([]);
+            setOpen(false);
+        }).finally(() => {
+            setLoading(false);
+        });
     }
 
     const handleDelete = async () => {
@@ -53,7 +82,7 @@ const ServiceDialog = ({ service }: IProps) => {
                             onChange={(e) => setData({ ...data, name: e.target.value })}
                             value={data.name}
                             placeholder="Название услуги"
-                            className="h-10"
+                            className={cn("h-10", errors.includes("name") && "border-red-500 animate-shake transition-all")}
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-10">
@@ -65,7 +94,7 @@ const ServiceDialog = ({ service }: IProps) => {
                                 onChange={(e) => setData({ ...data, price: e.target.value })}
                                 value={data.price}
                                 placeholder="Цена услуги ₽"
-                                className="h-10"
+                                className={cn("h-10", errors.includes("price") && "border-red-500 animate-shake transition-all")}
                             />
                         </div>
                         <div className="grid gap-2">
@@ -76,7 +105,7 @@ const ServiceDialog = ({ service }: IProps) => {
                                 type="time"
                                 value={data.duration}
                                 onChange={(e) => setData({ ...data, duration: e.target.value })}
-                                className="h-10"
+                                className={cn("h-10", errors.includes("duration") && "border-red-500 animate-shake transition-all")}
                                 placeholder="Длительность услуги"
                             />
                         </div>
@@ -94,7 +123,7 @@ const ServiceDialog = ({ service }: IProps) => {
                 </div>
                 <DialogFooter>
                     <Button variant={"destructive"} className="w-23 mb:w-full" size={"lg"} onClick={handleDelete}>Удалить</Button>
-                    <Button size={"lg"} className="w-35 mb:w-full" onClick={handleSave}>Сохранить</Button>
+                    <Button size={"lg"} className="w-35 mb:w-full" onClick={handleSave}>{loading ? <Loader2 className="animate-spin" /> : "Сохранить"}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
