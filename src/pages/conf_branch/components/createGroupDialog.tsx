@@ -9,9 +9,10 @@ import { set } from "date-fns";
 
 interface IProps {
     branch: IBranch;
+    refetch: () => void;
 }
 
-const CreateGroupDialog = ({ branch }: IProps) => {
+const CreateGroupDialog = ({ branch, refetch }: IProps) => {
 
     const [data, setData] = useState<any>({});
     const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ const CreateGroupDialog = ({ branch }: IProps) => {
             ...data,
             branch: branch.id
         }).then(() => {
+            refetch();
             setOpen(false);
         }).catch((e) => {
             setError(e.response.data.name[0]);

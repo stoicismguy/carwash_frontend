@@ -184,7 +184,7 @@ const ConfBranch = () => {
                         <div className="flex items-center justify-between mb-3 mb:flex-col mb:w-full">
                             <p className="text-xl font-semibold mb:text-lg mb:mb-1">Услуги</p>
                             <div className="flex gap-2 mb:flex-col mb:w-full">
-                                <CreateGroupDialog branch={branch} />
+                                <CreateGroupDialog branch={branch} refetch={fetchData} />
                                 <CreateServiceDialog branch={branch} groups={serviceGroups} refetch={fetchData} />
                             </div>
                         </div>

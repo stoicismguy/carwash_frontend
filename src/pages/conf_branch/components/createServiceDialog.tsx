@@ -45,7 +45,7 @@ export const GroupList = ({ groups, cid, handleSelect, error }: IGroupList) => {
             <PopoverContent className="w-[200px] p-0">
                 <Command>
                     <CommandList>
-                        <CommandEmpty>Создайте группу услуг</CommandEmpty>
+                        <CommandEmpty><p className="text-muted-foreground">Создайте группу услуг</p></CommandEmpty>
                         <CommandGroup>
                         {groups.map((group) => (
                             <CommandItem

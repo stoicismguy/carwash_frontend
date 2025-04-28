@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { IOrderData } from "@/pages/search"
+import { IOrderData } from "@/pages/search";
 import { Skeleton } from "@/components/ui";
 
 interface IProps {

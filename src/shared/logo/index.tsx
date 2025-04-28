@@ -1,5 +1,6 @@
 import { LineShadowText } from "@/components/magicui";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 
 interface IProps {
@@ -8,8 +9,10 @@ interface IProps {
 }
 
 const Logo = ({ color, className }: IProps) => {
+    const navigate = useNavigate();
     return (
-        <h1 className={cn("mx-auto font-bold flex",
+        <h1 onClick={() => navigate("/search")}
+            className={cn("mx-auto font-bold cursor-pointer flex",
             className, 
             (color === "black" ? "text-primary" : "text-primary-foreground"))}>
                 МОЙ

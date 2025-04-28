@@ -56,8 +56,8 @@ const ConfCarwash = () => {
         const carWashResponse = await api.get(`carwashes/${id}/`);
         setCarWash(carWashResponse.data);
         // Загрузка филиалов
-        const branchesResponse = await api.get(`carwashes/${id}/branches/`);
-        setBranches(branchesResponse.data.results);
+        const branchesResponse = await api.get(`carwashes/conf/${id}/branches/`);
+        setBranches(branchesResponse.data);
     };
 
     // Загрузка данных автомойки и филиалов

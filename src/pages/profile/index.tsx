@@ -28,50 +28,31 @@ const Profile = () => {
             replacement: { _: /\d/ },
         }); 
 
-// Пример данных для истории записей
-const washHistory = [
-    {
-        id: 1,
-        carWashName: "Автомойка на Ленина",
-        date: "24.04.2025",
-        status: "Завершена",
-    },
-    {
-        id: 2,
-        carWashName: "Мойка 24/7",
-        date: "20.04.2025",
-        status: "Запланирована",
-    },
-];
+    const washHistory = [
+        {
+            id: 1,
+            carWashName: "Автомойка на Ленина",
+            date: "24.04.2025",
+            status: "Завершена",
+        },
+        {
+            id: 2,
+            carWashName: "Мойка 24/7",
+            date: "20.04.2025",
+            status: "Запланирована",
+        },
+    ];
 
-// Пример данных для предприятий
-const businesses: IBusiness[] = [
-    {
-        id: 1,
-        name: 'ООО "Асфальтовый Кайф"',
-        address: "Рейтинг: 4.5, Филиалов: 2",
-    },
-];
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUserData((prev) => (prev ? { ...prev, [name]: value } : prev));
+    };
 
-// Обработчик изменения полей
-const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData((prev) => (prev ? { ...prev, [name]: value } : prev));
-};
+    const handleSave = () => {
+        setIsEditing(false);
+        console.log("Сохраненные данные:", userData);
+    };
 
-// Обработчик сохранения
-const handleSave = () => {
-    setIsEditing(false);
-    // Здесь можно отправить данные на сервер
-    console.log("Сохраненные данные:", userData);
-};
-
-// Заглушка для редиректа (вы реализуете самостоятельно)
-const handleBusinessClick = (businessId: number) => {
-    console.log(`Редирект на предприятие с ID: ${businessId}`);
-    // Добавьте вашу логику редиректа, например:
-    // navigate(`/business/${businessId}`);
-};
 
 return (
     <div className="min-h-screen bg-background">
