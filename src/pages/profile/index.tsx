@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { useAuth, IUser } from "@/AuthContext";
 import { CarwashList } from "./components";
 import { formatPhoneNumber } from "@/shared/utils";
 import { useMask } from "@react-input/mask";
+import api from "@/api";
 
 // Интерфейс для предприятия
 interface IBusiness {
@@ -23,6 +24,7 @@ const Profile = () => {
     const { user } = useAuth(); // Получаем пользователя из useAuth
     const [isEditing, setIsEditing] = useState(false);
     const [userData, setUserData] = useState<IUser>(user);
+    const [history, setHistory] = useState<any[]>([]);
     const inputRef = useMask({
             mask: "+7 (___) ___-__-__",
             replacement: { _: /\d/ },
@@ -53,7 +55,15 @@ const Profile = () => {
         console.log("Сохраненные данные:", userData);
     };
 
+    const fetchHistory = async () => {
+        await api.get(`bookings/history/`).then(res => {
+            setHistory(res.data);
+        });
+    }
 
+    useEffect(() => {
+        fetchHistory();
+    }, []);
 return (
     <div className="min-h-screen bg-background">
         <Header />
@@ -144,23 +154,23 @@ return (
                     </TabsContent>
                     <TabsContent value="history" className="mt-4">
                         <div className="space-y-4">
-                        <p className="text-muted-foreground">История записей на мойку:</p>
+                        {/* <p className="text-muted-foreground">История записей на мойку:</p> */}
                         <ul className="space-y-4">
-                            {washHistory.map((record) => (
-                            <li key={record.id} className="border rounded-lg p-4">
+                            {history.map((record) => (
+                            <li className="border rounded-lg p-4">
                                 <div className="flex justify-between items-center">
                                 <div>
-                                    <p className="font-semibold">{record.carWashName}</p>
-                                    <p className="text-sm text-muted-foreground">Дата: {record.date}</p>
+                                    <p className="font-semibold">{record.address}</p>
+                                    <p className="text-sm text-muted-foreground">Дата: {record.datetime}</p>
                                 </div>
                                 <p
                                     className={`text-sm px-2 py-1 rounded ${
-                                    record.status === "Завершена"
+                                    record.status === "pending"
                                         ? "bg-green-100 text-green-800"
                                         : "bg-yellow-100 text-yellow-800"
                                     }`}
                                 >
-                                    {record.status}
+                                    {record.status === "pending" ? "Запланирована" : "Завершена"}
                                 </p>
                                 </div>
                             </li>

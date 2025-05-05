@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Badge, Separator, Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui";
-import { Phone, Clock, Star, MapPin, Settings, ChevronDown, Edit3 } from "lucide-react";
+import { Phone, Clock, Star, MapPin, Settings, ChevronDown, Edit3, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import api from "@/api";
@@ -174,9 +174,12 @@ const ConfBranch = () => {
                     </div>
 
                     {/* Действия */}
-                    <div className="flex justify-end mb:flex-col gap-2 mb-3">
+                    <div className="flex justify-between mb:flex-col gap-2 mb-3">
                         <DeactivateBranchDialog carWash={branch} handleToggleActive={handleToggleActive} />
-                        <EditBranchDialog branch={branch} refetch={fetchData} />
+                        <div className="flex gap-2">
+                            <Button variant="outline" size="lg"><Calendar className="h-4 w-4" />Смотреть записи</Button>
+                            <EditBranchDialog branch={branch} refetch={fetchData} />
+                        </div>
                     </div>
 
                     {/* Конфигуратор услуг */}

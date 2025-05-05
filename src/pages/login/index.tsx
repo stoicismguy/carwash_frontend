@@ -48,6 +48,9 @@ const Login = () => {
             if (success) {
                 navigate("/search");
             }
+            else {
+                setIsInvalid(true);
+            }
             // navigate("/");
         }
         setLoad(false);

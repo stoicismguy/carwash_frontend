@@ -27,11 +27,6 @@ const Header = () => {
             img: <CircleHelp size={20} />,
             link: "/faq"
         },
-        {
-            text: "FAQ",
-            img: <CircleHelp size={20} />,
-            link: "/faq"
-        }
     ];
 
     return (

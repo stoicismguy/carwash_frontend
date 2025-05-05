@@ -36,17 +36,19 @@ export const AuthProvider: React.FC<{ children: React.ReactElement }> = ({ child
     }
 
     const login = async ({ phone_number, password }: ILogin) => {
-        await api.post("users/token/", { phone_number, password }).then((res) => {
-            localStorage.setItem("accessToken", res.data.access);
-            localStorage.setItem("refreshToken", res.data.access);
-            // localStorage.setItem("user", JSON.stringify(user));
-            console.log(res.data);
-        }).catch((error) => {return false});
-        await api.get("users/").then((res) => {
-            localStorage.setItem("user", JSON.stringify(res.data));
-            console.log(res.data);
-        }).catch((error) => {return false});
-        return true;
+        try {
+            const tokenResponse = await api.post("users/token/", { phone_number, password });
+            localStorage.setItem("accessToken", tokenResponse.data.access);
+            localStorage.setItem("refreshToken", tokenResponse.data.access);
+            
+            const userResponse = await api.get("users/");
+            localStorage.setItem("user", JSON.stringify(userResponse.data));
+            
+            return true;
+        } catch (error) {
+            console.error("Login error:", error);
+            return false;
+        }
     };
     const logout = () => {
         localStorage.removeItem("accessToken");

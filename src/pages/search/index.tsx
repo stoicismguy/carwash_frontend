@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import BreadcrumbNavigation from "./BreadCrumbNavigation";
 import { motion } from "framer-motion";
 import { Carwash, Department, Services, Payment, Autotype, Datetime } from "./stages";
+import { AlertCircle } from "lucide-react";
+import { useAuth } from "@/AuthContext";
 
 
 interface IPage {
@@ -41,6 +43,8 @@ export interface IService {
 const Search = () => {
 
     const [stage, setStage] = useState(0);
+    const { user } = useAuth();
+    const currentUser = user();
     const [pendingStage, setPendingStage] = useState<number | null>(null);
     const [orderData, setOrderData] = useState<IOrderData>({
         carwash: null,
@@ -106,6 +110,13 @@ const Search = () => {
         <>
             <Header />
             <BreadcrumbNavigation className="h-[60px] mb:px-5 mb:h-[80px]" pages={pages} stage={stage} handleStage={handleStageSwitch} />
+            {!currentUser && <div className="px-40 mb:px-4 pb-3">
+                <div className="flex flex gap-2 items-center justify-center bg-red-500 border border-red-600 px-2 py-1.5 rounded-md">
+                    <AlertCircle className="w-6 h-6 text-primary-foreground" strokeWidth={1.5} />
+                    <h1 className="text-sm font-semibold text-primary-foreground">Для бронирования необходимо иметь аккаунт!</h1>
+                </div>
+            </div>}
+            
             <motion.div
                 key={stage}
                 initial={{ opacity: 0, x: 100 }}
