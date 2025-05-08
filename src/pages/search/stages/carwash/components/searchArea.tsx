@@ -4,7 +4,7 @@ import { Button, Drawer,
     Label, Switch } from "@/components/ui";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CircleX, MapPin, Settings2, Star, X } from "lucide-react";
+import { AlignLeft, CircleX, MapPin, Settings2, Star, X } from "lucide-react";
 
 interface IProps {
     inputValue: string;
@@ -24,20 +24,15 @@ const SearchArea = ({ inputValue, setInputValue, fetch }: IProps) => {
 
     const filters: IFilter[] = [
         {
-            name: "Рейтинг",
-            logo: <Star size={20}/>,
+            name: "По умолчанию",
+            logo: <AlignLeft size={20} />,
             checked: true
         },
         {
-            name: "Расстояние",
-            logo: <MapPin size={20}/>,
+            name: "По рейтингу",
+            logo: <Star size={20} />,
             checked: false
-        },
-        {
-            name: "Стоимость",
-            logo: <CircleX size={20}/>,
-            checked: false
-        },
+        }
     ]
 
     return (

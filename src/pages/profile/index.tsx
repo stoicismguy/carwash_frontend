@@ -12,6 +12,7 @@ import { CarwashList } from "./components";
 import { formatPhoneNumber } from "@/shared/utils";
 import { useMask } from "@react-input/mask";
 import api from "@/api";
+import HistoryItem from "./components/historyItem";
 
 // Интерфейс для предприятия
 interface IBusiness {
@@ -28,22 +29,7 @@ const Profile = () => {
     const inputRef = useMask({
             mask: "+7 (___) ___-__-__",
             replacement: { _: /\d/ },
-        }); 
-
-    const washHistory = [
-        {
-            id: 1,
-            carWashName: "Автомойка на Ленина",
-            date: "24.04.2025",
-            status: "Завершена",
-        },
-        {
-            id: 2,
-            carWashName: "Мойка 24/7",
-            date: "20.04.2025",
-            status: "Запланирована",
-        },
-    ];
+        });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -157,23 +143,7 @@ return (
                         {/* <p className="text-muted-foreground">История записей на мойку:</p> */}
                         <ul className="space-y-4">
                             {history.map((record) => (
-                            <li className="border rounded-lg p-4">
-                                <div className="flex justify-between items-center">
-                                <div>
-                                    <p className="font-semibold">{record.address}</p>
-                                    <p className="text-sm text-muted-foreground">Дата: {record.datetime}</p>
-                                </div>
-                                <p
-                                    className={`text-sm px-2 py-1 rounded ${
-                                    record.status === "pending"
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-yellow-100 text-yellow-800"
-                                    }`}
-                                >
-                                    {record.status === "pending" ? "Запланирована" : "Завершена"}
-                                </p>
-                                </div>
-                            </li>
+                                <HistoryItem record={record} />
                             ))}
                         </ul>
                         </div>

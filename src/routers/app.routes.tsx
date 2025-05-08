@@ -11,6 +11,7 @@ const FAQ = lazy(() => import("@/pages/faq"));
 const Profile = lazy(() => import("@/pages/profile"));
 const ConfCarwash = lazy(() => import("@/pages/conf_carwash"));
 const ConfBranch = lazy(() => import("@/pages/conf_branch"));
+const BranchBookings = lazy(() => import("@/pages/branch_bookings"));
 // const Login = () => <div>Login</div>;
 // const Register = () => <div>Register</div>;
 
@@ -55,5 +56,9 @@ export const PrivateRoutes: Route[] = [
     {
         path: URLS.CONF_BRANCH,
         element: <ConfBranch />,
+    },
+    {
+        path: URLS.CONF_BRANCH_BOOKINGS,
+        element: <BranchBookings />,
     }
 ]

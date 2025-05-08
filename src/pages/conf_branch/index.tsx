@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button, Badge, Separator, Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui";
 import { Phone, Clock, Star, MapPin, Settings, ChevronDown, Edit3, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
@@ -54,6 +54,7 @@ const ConfBranch = () => {
     const [serviceGroups, setServiceGroups] = useState<IServiceGroup[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [openGroups, setOpenGroups] = useState<{ [key: number]: boolean }>({});
+    const navigate = useNavigate();
 
 
     const fetchData = async () => {
@@ -177,7 +178,14 @@ const ConfBranch = () => {
                     <div className="flex justify-between mb:flex-col gap-2 mb-3">
                         <DeactivateBranchDialog carWash={branch} handleToggleActive={handleToggleActive} />
                         <div className="flex gap-2">
-                            <Button variant="outline" size="lg"><Calendar className="h-4 w-4" />Смотреть записи</Button>
+                            <Button 
+                                variant="outline" 
+                                size="lg"
+                                onClick={() => navigate(`/conf/branch/${id}/bookings`)}
+                            >
+                                <Calendar className="h-4 w-4 mr-2" />
+                                Смотреть записи
+                            </Button>
                             <EditBranchDialog branch={branch} refetch={fetchData} />
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Drawer, DrawerClose, DrawerContent, DrawerTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui";
-import { CircleHelp, LogIn, LogOut, Menu } from "lucide-react";
+import { CircleHelp, LogIn, LogOut, Menu, CalendarClock } from "lucide-react";
 import AvatarHeader from "./avatar";
 import { IAuthContext, useAuth } from "@/AuthContext";
 import { motion } from "framer-motion";
@@ -26,7 +26,7 @@ const Header = () => {
             text: "FAQ",
             img: <CircleHelp size={20} />,
             link: "/faq"
-        },
+        }
     ];
 
     return (
@@ -59,7 +59,7 @@ const Header = () => {
                         </div>
                         <div className="flex flex-col gap-0 w-full">
                             {linkList.map((link, index) => (
-                                <div className="flex items-center gap-2 px-3 pl-4 py-3 border-b-1" onClick={() => naviage(link.link)}>{link.img}{link.text}</div>
+                                <div key={index} className="flex items-center gap-2 px-3 pl-4 py-3 border-b-1" onClick={() => naviage(link.link)}>{link.img}{link.text}</div>
                             ))}
                         </div>
                     </DrawerContent>

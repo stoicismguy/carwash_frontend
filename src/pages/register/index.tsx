@@ -7,17 +7,22 @@ import { cn } from "@/lib/utils";
 import { Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
+import api from "@/api";
+import { useAuth } from "@/AuthContext";
 
 const Register = () => {
     const navigate = useNavigate();
     const [isInvalid, setIsInvalid] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [password, setPassword] = useState("");
     const [progress, setProgress] = useState(0);
+    const [name, setName] = useState("");
 
     const [load, setLoad] = useState(false);
     const [tabValue, setTabValue] = useState("user");
+    const { login } = useAuth();
 
     const inputRef = useMask({
         mask: "+7 (___) ___-__-__",
@@ -32,20 +37,73 @@ const Register = () => {
         return false;
     }
 
-    const handlesSubmit = (event: any) => {
+    const handlesSubmit = async (event: any) => {
         event.preventDefault();
         setLoad(true);
+        setErrorMessage("");
+
         const phoneValue = inputRef.current?.value || "";
         const isValid = validatePhone(phoneValue);
+        
         if (!isValid) {
             setIsInvalid(true);
+            setErrorMessage("Введите корректный номер телефона");
             setTimeout(() => setIsInvalid(false), 500);
+            setLoad(false);
+            return;
         }
-        else {
-           // Тут можно дальше логику авторизации пихать
-           navigate("/");
+
+        if (name.trim() === "") {
+            setErrorMessage("Введите имя или название компании");
+            setLoad(false);
+            return;
         }
-        setLoad(false);
+
+        if (progress < 80) {
+            setErrorMessage("Пароль не соответствует требованиям безопасности");
+            setLoad(false);
+            return;
+        }
+
+        try {
+            // Преобразуем номер телефона в формат без символов форматирования
+            const formattedPhone = phoneValue.replace(/\D/g, "");
+            
+            // Выполняем запрос на регистрацию
+            const response = await api.post("users/register/", {
+                "phone_number": formattedPhone,
+                "user_type": tabValue === "buisness" ? "business" : "user",
+                "name": name,
+                "password": password
+            });
+            
+            // После успешной регистрации выполняем вход
+            const loginSuccess = await login({
+                phone_number: formattedPhone,
+                password: password
+            });
+            
+            if (loginSuccess) {
+                navigate("/search");
+            } else {
+                // Если вход не удался, перенаправляем на страницу входа
+                navigate("/login");
+            }
+        } catch (error: any) {
+            console.error("Registration error:", error);
+            // Обрабатываем ошибки от API
+            if (error.response && error.response.data) {
+                if (error.response.data.phone_number) {
+                    setErrorMessage("Этот номер телефона уже зарегистрирован");
+                } else {
+                    setErrorMessage("Ошибка при регистрации. Попробуйте позже.");
+                }
+            } else {
+                setErrorMessage("Ошибка соединения с сервером");
+            }
+        } finally {
+            setLoad(false);
+        }
     }
 
     const handePasswordChange = (value: string) => {
@@ -54,7 +112,6 @@ const Register = () => {
         const hasLetter = /[A-Za-z]/.test(value);
         const hasDigit = /\d/.test(value);
         const progress = ((hasLenght ? 1 : 0) + (hasLetter ? 1 : 0) + (hasDigit ? 1 : 0)) / 3 * 100;
-        console.log(progress);
         setProgress(progress);
     }
 
@@ -70,21 +127,37 @@ const Register = () => {
                     </TabsList>
                 </Tabs>
 
-                {/* <Skeleton className="w-full h-10" /> */}
+                {errorMessage && (
+                    <div className="text-red-500 text-sm w-full px-1">
+                        {errorMessage}
+                    </div>
+                )}
 
                 <Input type="text"
                     className={cn("h-10 mb:h-12", isInvalid ? "border-red-500 animate-shake transition-all" : "")}
                     placeholder="+7 (___) ___-__-__" ref={inputRef}
-                    onChange={() => setIsInvalid(false)}/>
+                    onChange={() => {
+                        setIsInvalid(false);
+                        setErrorMessage("");
+                    }}/>
 
-                <Input type="text" className="h-10 mb:h-12"
-                    placeholder={tabValue === "buisness" ? "Название компании" : "Фамилия Имя"} onInput={(e) => {console.log((e.target as HTMLInputElement).value)}}
+                <Input 
+                    type="text" 
+                    className="h-10 mb:h-12"
+                    placeholder={tabValue === "buisness" ? "Название компании" : "Фамилия Имя"} 
+                    onChange={(e) => {
+                        setName(e.target.value);
+                        setErrorMessage("");
+                    }}
                     maxLength={40} />
                 <div className="w-full flex flex-col gap-1">
                     <div className="w-full flex items-center relative">
                         <Input type={passwordVisible ? "password" : "text"}
                             placeholder="Пароль" 
-                            onChange={(e) => handePasswordChange(e.target.value)}
+                            onChange={(e) => {
+                                handePasswordChange(e.target.value);
+                                setErrorMessage("");
+                            }}
                             className="pr-9 h-10 mb:h-12 mb:pr-11" />
 
                         {!passwordVisible ? 
@@ -101,7 +174,7 @@ const Register = () => {
                 
                 
                 <Button className="cursor-pointer h-10 font-bold mb:w-full mb:h-12 mb:text-lg" disabled={load}
-                    onClick={() => handlesSubmit(event)}>{load ? <LoaderCircle className="animate-spin"/> : "Зарегистрироваться"}</Button>
+                    onClick={handlesSubmit}>{load ? <LoaderCircle className="animate-spin"/> : "Зарегистрироваться"}</Button>
                 <p className="text-sm text-center text-muted-foreground">Уже есть аккаунт? <a href="/login" className="hover:text-primary underline-offset-4 underline">Войти</a></p>
             </form>
         </LoginTemplate>

@@ -70,7 +70,7 @@ const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
                     </div>
                     <Button 
                         size="lg" 
-                        className="bg-green-600 hover:bg-green-600 text-white mb:w-full"
+                        className="bg-green-600 min-w-70 hover:bg-green-600 text-white mb:w-full"
                         onClick={() => navigate('/profile')}
                     >
                         Готово
