@@ -2,42 +2,55 @@ import { Button, Drawer,
     DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, 
     DrawerTitle, DrawerTrigger, Input, 
     Label, Switch } from "@/components/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlignLeft, CircleX, MapPin, Settings2, Star, X } from "lucide-react";
+import { AlignLeft, CircleX, MapPin, Settings2, Star, ThumbsUp, X } from "lucide-react";
 
 interface IProps {
     inputValue: string;
     setInputValue: (value: string) => void;
-    fetch: (page?: number, inputValue?: string) => Promise<void>;
+    fetch: (page?: number, inputValue?: string, orderby?: string) => Promise<void>;
 }
 
 interface IFilter {
     name: string,
     logo: React.ReactElement,
-    checked: boolean
+    value: string
 }
 
 const SearchArea = ({ inputValue, setInputValue, fetch }: IProps) => {
 
     const [focused, setFocused] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [state, setState] = useState<number>(0);
 
     const filters: IFilter[] = [
         {
             name: "По умолчанию",
             logo: <AlignLeft size={20} />,
-            checked: true
+            value: "id"
         },
         {
             name: "По рейтингу",
             logo: <Star size={20} />,
-            checked: false
+            value: "rating_avg"
+        },
+        {
+            name: "По популярности",
+            logo: <ThumbsUp size={20} />,
+            value: "rating__count"
         }
     ]
 
+    const toggleSet = (index: number) => {
+        setState(index);
+        setOpen(false);
+        fetch(1, inputValue, filters[index].value);
+    }
+
     return (
         <div className="w-full flex items-center gap-2">
-            <Drawer>
+            <Drawer open={open} onOpenChange={setOpen}>
                 <DrawerTrigger asChild>
                     <Settings2 size={35} strokeWidth={1.25}/>
                 </DrawerTrigger>
@@ -46,16 +59,20 @@ const SearchArea = ({ inputValue, setInputValue, fetch }: IProps) => {
                         <DrawerClose asChild>
                             <h1>Закрыть</h1>
                         </DrawerClose>
-                        <DrawerTitle className="text-lg">Сортировать по</DrawerTitle>
+                        <DrawerTitle className="text-lg">Cортировать</DrawerTitle>
                         <h1>Сбросить</h1>
                     </DrawerHeader>
                     <div className="w-full pb-30 flex flex-col gap-2 px-3">
                         {filters.map((filter, index) => (
-                            <Button variant={filter.checked ? "default" : "secondary"} size={"lg"} className="w-full flex items-center text-md gap-2 justify-center"><h1>{filter.name}</h1>{filter.logo}</Button>
+                            <Button
+                                variant={state === index ? "default" : "secondary"}
+                                size={"lg"}
+                                className="w-full flex items-center text-md gap-2 justify-center"
+                                onClick={() => toggleSet(index)}><h1>{filter.name}</h1>{filter.logo}</Button>
                         ))}
                     </div>
                     <DrawerFooter>
-                        <Button className="w-full h-[50px] text-md">Применить</Button>
+                        {/* <Button className="w-full h-[50px] text-md">Применить</Button> */}
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>

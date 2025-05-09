@@ -1,5 +1,5 @@
 import { Button, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, Skeleton } from "@/components/ui";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Star } from "lucide-react";
 import { Drawer } from "@/components/ui";
 import { useEffect, useState } from "react";
 import api from "@/api";
@@ -16,7 +16,7 @@ export interface IReview {
     description: string;
     rating_value: number;
     created_at: string;
-    user: number;
+    user: any;
     branch: number;
 }
 
@@ -97,15 +97,20 @@ const CarwashItem = ({item, choose, data}: IProps) => {
                                     <p>{item.rating}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">10 отзывов</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {reviews.length} {reviews.length === 1 ? 'отзыв' : 
+                                        reviews.length >= 2 && reviews.length <= 4 ? 'отзыва' : 'отзывов'}
+                                    </p>
                                 </div>
                             </div>
                             <div className="h-full w-min-w flex items-center">
                                 <ChevronRight size={20} className="text-muted-foreground" />
                             </div>
                         </div>
-                        <div className="w-full rounded-xl bg-muted p-4">
-                            <p>{item.address}</p>
+                        <div className="w-full rounded-xl bg-muted p-4 flex items-center gap-2">
+                            <MapPin size={25} className="text-muted-foreground" />
+                            <p className="text-md">{item.branch_count} {item.branch_count === 1 ? 'филиал' : 
+                               item.branch_count >= 2 && item.branch_count <= 4 ? 'филиала' : 'филиалов'}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 pt-2">

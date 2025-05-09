@@ -13,11 +13,17 @@ const ReviewItem = ({ item }: IProps) => {
                 <div className="flex gap-2 items-center">
                     <Avatar className="h-9 w-9">
                         {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-                        <AvatarFallback className="bg-primary text-primary-foreground">Го</AvatarFallback>
+                        <AvatarFallback className="bg-primary text-primary-foreground">{item.user.name[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col leading-none">
-                        <h1 className="text-md font-semibold">Гошан</h1>
-                        <p className="text-sm text-muted-foreground">Вчера, 09:33</p>
+                        <h1 className="text-md font-semibold truncate max-w-[160px]">{item.user.name}</h1>
+                        <p className="text-sm text-muted-foreground">{new Date(item.created_at).toLocaleString('ru-RU', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</p>
                     </div>
                 </div>
                 <div className="flex gap-1 items-center">
@@ -25,9 +31,11 @@ const ReviewItem = ({ item }: IProps) => {
                     {Array(5 - Math.round(item.rating_value)).fill(0).map((_, i) => <Star className="text-yellow-400" />)}
                 </div>
             </div>
-            <div className="w-full py-2">
-                <p className="text-sm">{item.description}</p>
-            </div>
+            {item.description && (
+                <div className="w-full py-2">
+                    <p className="text-sm">{item.description}</p>
+                </div>
+            )}
         </div>
     );
 }

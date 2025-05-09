@@ -18,9 +18,11 @@ const Carwash = ({ page, handleStage, changeData, data }: IPageProps) => {
 
     const [response, setResponse] = useState<IResponse | null>(null);
     const [inputValue, setInputValue] = useState("");
+    const [lastOrderby, setLastOrderby] = useState("id");
 
-    const fetchList = async (page?: number, inputValue?: string) => {
-        await api.get(`carwashes/search/?page=${page ? page : ''}&${inputValue ? `&name=${inputValue}` : ''}`).then((res) => {
+    const fetchList = async (page?: number, inputValue?: string, orderby?: string) => {
+        setLastOrderby(orderby || lastOrderby);
+        await api.get(`carwashes/search/?page=${page ? page : ''}&${inputValue ? `&name=${inputValue}` : ''}&order_by=${orderby || lastOrderby}`).then((res) => {
             setResponse(res.data);
         })
     }

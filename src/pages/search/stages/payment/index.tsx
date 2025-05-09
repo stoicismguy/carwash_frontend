@@ -11,6 +11,7 @@ interface IServiceInfo {
     services: IService[];
     total_price: number;
     total_duration: any;
+    address: string;
 }
 
 const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
@@ -24,7 +25,8 @@ const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
     const [serviceInfo, setServiceInfo] = useState<IServiceInfo>({
         services: [],
         total_price: 0,
-        total_duration: 0
+        total_duration: 0,
+        address: ""
     });
 
     const fetchServices = async () => {
@@ -34,7 +36,8 @@ const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
             setServiceInfo({
                 services: res.data.services,
                 total_price: res.data.total_price,
-                total_duration: res.data.total_duration
+                total_duration: res.data.total_duration,
+                address: res.data.address
             });
         });
     }
@@ -65,7 +68,7 @@ const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
                         </div>
                         <div className="flex items-center gap-2">
                             <MapPin strokeWidth={1.5} className="h-6 w-6 text-muted-foreground" />
-                            <p className="text-sm text-muted-foreground">{data.department}</p>
+                            <p className="text-sm text-muted-foreground">{serviceInfo.address}</p>
                         </div>
                     </div>
                     <Button 
@@ -83,7 +86,6 @@ const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
     return (
         <div className="w-full px-40 pb-10 flex gap-10 flex-col mb:px-5">
             <div className="flex flex-col gap-3">
-                {/* <h1 className="text-2xl font-semibold">Ваша запись:</h1> */}
                 <div className="flex flex-col gap-4">
                 <div className="shadow-md border border-border rounded-lg bg-background p-6">
                     <div className="flex items-center gap-3">
@@ -98,7 +100,7 @@ const Payment = ({ page, handleStage, changeData, data }: IPageProps) => {
                         <MapPin strokeWidth={1.5} className="h-6 w-6 text-muted-foreground" />
                         <div>
                         <p className="text-sm text-muted-foreground">Место</p>
-                        <p className="font-semibold text-foreground">{data.department}</p>
+                        <p className="font-semibold text-foreground">{serviceInfo.address}</p>
                         </div>
                     </div>
                 </div>

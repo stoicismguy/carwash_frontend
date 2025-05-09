@@ -2,12 +2,26 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "@/api";
 import { ChevronRight, Settings } from "lucide-react";
-import { Badge } from "@/components/ui";
+import { Badge, Button } from "@/components/ui";
+import CarwashDialog from "@/pages/conf_carwash/components/carwashDialog";
 
 const CarwashList = () => {
 
     const [carwashes, setCarwashes] = useState<any[]>([]);
     const navigate = useNavigate();
+    const carwash = {
+        id: 14,
+        name: "",
+        phone_number: "",
+        description: "",
+        email: "",
+        rating: "5",
+        is_active: true,
+        logo: "",
+        website: "",
+        created_at: "",
+        user: 14
+    }
 
     const fetchList = async () => {
         await api.get(`carwashes/conf/carwashes/`).then((res) => {
@@ -44,6 +58,7 @@ const CarwashList = () => {
                     </button>
                 ))}
             </div>
+            <CarwashDialog className="mt-3" carwash={carwash} refetch={fetchList} variant="create" />
         </div>
     )
 }

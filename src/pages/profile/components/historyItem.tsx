@@ -41,16 +41,22 @@ const HistoryItem = ({ record }: IProps) => {
                     <div className="flex justify-between items-center">
                         <div>
                             <p className="font-semibold">{record.address}</p>
-                            <p className="text-sm text-muted-foreground">Дата: {record.datetime}</p>
+                            <p className="text-sm text-muted-foreground">Дата: {new Date(record.datetime).toLocaleString('ru-RU', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}</p>
                         </div>
                         <p
                             className={`text-sm px-2 py-1 rounded ${
-                            record.status === "pending"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-yellow-100 text-yellow-800"
+                            new Date(record.datetime) < new Date()
+                                ? "bg-gray-100 text-gray-800"
+                                : "bg-green-100 text-green-800"
                             }`}
                         >
-                            {record.status === "pending" ? "Запланирована" : "Завершена"}
+                            {new Date(record.datetime) < new Date() ? "Завершена" : "Запланирована"}
                         </p>
                     </div>
                 </li>
@@ -73,7 +79,13 @@ const HistoryItem = ({ record }: IProps) => {
                         </div>
                         <div className="flex items-center gap-2 text-foreground">
                             <Clock className="h-5 w-5 text-muted-foreground" />
-                            <p>{record.datetime}</p>
+                            <p>{new Date(record.datetime).toLocaleString('ru-RU', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}</p>
                         </div>
                     </div>
 

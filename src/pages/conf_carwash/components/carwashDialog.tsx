@@ -10,10 +10,12 @@ import { cn } from "@/lib/utils";
 
 interface IProps {
     carwash: ICarWash,
-    refetch: () => void
+    refetch: () => void,
+    variant: "edit" | "create",
+    className?: string
 }
 
-const CarwashDialog = ({ carwash, refetch }: IProps) => {
+const CarwashDialog = ({ carwash, refetch, className, variant = "edit" }: IProps) => {
 
     const [data, setData] = useState<any>(carwash);
     const [open, setOpen] = useState(false);
@@ -46,17 +48,31 @@ const CarwashDialog = ({ carwash, refetch }: IProps) => {
             setLoading(false);
             return;
         };
-        await api.patch(`carwashes/${carwash.id}/`, {
-            ...data,
-            phone_number: inputRef.current?.value.replace(/[ -+()-]/g, "")
-        }).then(() => {
-            refetch();
-            setOpen(false);
-        }).catch((e) => {
-            console.log(e);
-        }).finally(() => {
-            setLoading(false);
-        });
+        if (variant == "edit") {
+            await api.patch(`carwashes/${carwash.id}/`, {
+                ...data,
+                phone_number: inputRef.current?.value.replace(/[ -+()-]/g, "")
+            }).then(() => {
+                refetch();
+                setOpen(false);
+            }).catch((e) => {
+                console.log(e);
+            }).finally(() => {
+                setLoading(false);
+            });
+        } else {
+            await api.post(`carwashes/`, {
+                ...data,
+                phone_number: inputRef.current?.value.replace(/[ -+()-]/g, "")
+            }).then(() => {
+                refetch();
+                setOpen(false);
+            }).catch((e) => {
+                console.log(e);
+            }).finally(() => {
+                setLoading(false);
+            });
+        }
     }
 
     return (
@@ -64,14 +80,15 @@ const CarwashDialog = ({ carwash, refetch }: IProps) => {
             <DialogTrigger asChild>
                 <Button
                     size="lg"
-                    className="mb:w-full"
+                    className={cn("mb:w-full", className)}
+                    variant={variant === "edit" ? "outline" : "default"}
                     >
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Редактировать
+                    
+                    {variant === "edit" ? <><Pencil className="mr-2 h-4 w-4" />Редактировать</> : "Добавить"}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[625px] mb:w-full mb:max-w-full">
-                <DialogHeader className="font-semibold text-xl">Изменить информацию о автомойке</DialogHeader>
+                <DialogHeader className="font-semibold text-xl">{variant === "edit" ? "Изменить информацию о автомойке" : "Добавить автомойку"}</DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
                         <Label htmlFor="name" className="text-sm font-medium">Название</Label>
