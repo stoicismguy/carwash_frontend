@@ -17,7 +17,8 @@ export interface IAuthContext {
     user: any,
     // login: ({phone, password}: ILogin) => Promise<void>,
     login: ({phone_number, password}: ILogin) => Promise<boolean>,
-    logout: () => void
+    logout: () => void,
+    updateUser: (userData: IUser) => void
 }
 
 
@@ -56,8 +57,12 @@ export const AuthProvider: React.FC<{ children: React.ReactElement }> = ({ child
         localStorage.removeItem("user");
     };
 
+    const updateUser = async (userData: IUser) => {
+        localStorage.setItem("user", JSON.stringify(userData));
+    }
+
     return (
-        <AuthContext.Provider value={{user, login, logout}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{user, login, logout, updateUser}}>{children}</AuthContext.Provider>
     )   
 }
 

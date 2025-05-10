@@ -13,6 +13,7 @@ import { formatPhoneNumber } from "@/shared/utils";
 import { useMask } from "@react-input/mask";
 import api from "@/api";
 import HistoryItem from "./components/historyItem";
+import { cn } from "@/lib/utils";
 
 // Интерфейс для предприятия
 interface IBusiness {
@@ -22,10 +23,12 @@ interface IBusiness {
 }
 
 const Profile = () => {
-    const { user } = useAuth(); // Получаем пользователя из useAuth
+    const { user } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [userData, setUserData] = useState<IUser>(user);
     const [history, setHistory] = useState<any[]>([]);
+    const { updateUser } = useAuth();
+    const [error, setError] = useState<boolean>(false);
     const inputRef = useMask({
             mask: "+7 (___) ___-__-__",
             replacement: { _: /\d/ },
@@ -34,11 +37,25 @@ const Profile = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData((prev) => (prev ? { ...prev, [name]: value } : prev));
+        if (error) setError(false);
     };
 
     const handleSave = () => {
-        setIsEditing(false);
-        console.log("Сохраненные данные:", userData);
+        const phone = inputRef.current?.value.replace(/\D/g, '');
+        if (!phone 
+            || phone.length != 11 
+            || !userData.name) {
+            setError(true);
+            return;
+        }
+        api.patch(`users/`, {
+            name: userData.name,
+            phone_number: phone,
+        }).then(res => {
+            setUserData(res.data);
+            setIsEditing(false);
+            updateUser(res.data);
+        });
     };
 
     const fetchHistory = async () => {
@@ -97,7 +114,7 @@ return (
                             <Input
                             id="name"
                             name="name"
-                            className="h-12 mb:h-11"
+                            className={cn("h-12 mb:h-11", error ? "border-red-500 animate-shake transition-all" : "")}
                             value={userData.name}
                             onChange={handleInputChange}
                             disabled={!isEditing}
@@ -108,7 +125,7 @@ return (
                             <Input
                             id="phone_number"
                             name="phone_number"
-                            className="h-12 mb:h-11"
+                            className={cn("h-12 mb:h-11", error ? "border-red-500 animate-shake transition-all" : "")}
                             placeholder="+7 (___) ___-__-__"
                             value={formatPhoneNumber(userData.phone_number)}
                             ref={inputRef}
@@ -143,7 +160,7 @@ return (
                         {/* <p className="text-muted-foreground">История записей на мойку:</p> */}
                         <ul className="space-y-4">
                             {history.map((record) => (
-                                <HistoryItem record={record} />
+                                <HistoryItem record={record} refetch={fetchHistory} />
                             ))}
                         </ul>
                         </div>

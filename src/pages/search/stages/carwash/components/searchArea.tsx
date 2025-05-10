@@ -33,12 +33,12 @@ const SearchArea = ({ inputValue, setInputValue, fetch }: IProps) => {
         {
             name: "По рейтингу",
             logo: <Star size={20} />,
-            value: "rating_avg"
+            value: "-rating"
         },
         {
             name: "По популярности",
             logo: <ThumbsUp size={20} />,
-            value: "rating__count"
+            value: "rating_count"
         }
     ]
 

@@ -5,12 +5,13 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import api from "@/api";
 import CreateReviewDialog from "./createReviewDialog";
-
+import CancelBookingDialog from "./cancelBookingDialog";
 interface IProps {
     record: any;
+    refetch: () => void;
 }
 
-const HistoryItem = ({ record }: IProps) => {
+const HistoryItem = ({ record, refetch }: IProps) => {
 
     const [open, setOpen] = useState(false);
     const [review, setReview] = useState({
@@ -128,10 +129,13 @@ const HistoryItem = ({ record }: IProps) => {
                         </div>
                     ) : (
                         <div className="flex justify-end">
-                            <CreateReviewDialog branch={record.branch} address={record.address} refetch={getReview} />
+                            {new Date(record.datetime) < new Date() ? (
+                                <CreateReviewDialog branch={record.branch} address={record.address} refetch={getReview} />
+                            ) : (
+                                <CancelBookingDialog record={record} close={() => setOpen(false)} refetch={refetch} />
+                            )}
                         </div>
                     )}
-                    
                 </div>
             </DrawerContent>
         </Drawer>

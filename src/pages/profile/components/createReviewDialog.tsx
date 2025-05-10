@@ -45,7 +45,7 @@ const CreateReviewDialog = ({ branch, address, refetch }: IProps) => {
                         ))}
                     </div>
                     <div className="flex flex-col gap-1">
-                        <div className="text-sm text-muted-foreground">Описание</div>
+                        <div className="text-sm text-muted-foreground">Комментарий</div>
                         <Textarea
                             placeholder="Оставьте свой отзыв"
                             value={description}
