@@ -51,16 +51,15 @@ const GroupItem = ({ item, choose, services, openDefault }: IProps) => {
                     </TableHeader>
                     <TableBody>
                         {item.services.map((service: IService) => {
-                            const date = new Date(`1970-01-01T${service.duration}Z`);
+                            const date = new Date(`1970-01-01T${service.duration}`);
                             return (<TableRow className="h-11" onClick={() => {
-                                choose(service)
-                                // console.log(service)
+                                choose(service);
                                 }}>
                                 <TableCell className="text-md">{services.some((item) => item.id === service.id) ? <Check className="text-muted-foreground" /> : <Check className="text-muted" />}</TableCell>
                                 <TableCell style={{ maxWidth: "180px", textWrap: "wrap" }} className="text-md text-primary overflow-hidden text-ellipsis">{service.name}</TableCell>
                                 <TableCell className="text-primary">₽{service.price}</TableCell>
                                 <TableCell className="text-primary mb:hidden">{service.description}</TableCell>
-                                <TableCell className="text-right text-primary">{date.getMinutes()} мин</TableCell>
+                                <TableCell className="text-right text-primary">{date.getMinutes() + date.getHours() * 60} мин</TableCell>
                             </TableRow>)
                             })}
                     </TableBody>

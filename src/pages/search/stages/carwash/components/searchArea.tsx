@@ -38,7 +38,7 @@ const SearchArea = ({ inputValue, setInputValue, fetch }: IProps) => {
         {
             name: "По популярности",
             logo: <ThumbsUp size={20} />,
-            value: "rating_count"
+            value: "-rating_count"
         }
     ]
 

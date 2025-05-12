@@ -8,7 +8,7 @@ interface IProps {
 
 const ReviewItem = ({ item }: IProps) => {
     return (
-        <div className="rounded-xl bg-muted px-4 py-3">
+        <div className="rounded-xl bg-muted px-4 py-3" key={item.id}>
             <div className="flex gap-2 items-center justify-between">
                 <div className="flex gap-2 items-center">
                     <Avatar className="h-9 w-9">

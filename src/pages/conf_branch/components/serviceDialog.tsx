@@ -12,7 +12,7 @@ interface IProps {
 const ServiceDialog = ({ service }: IProps) => {
 
     const [data, setData] = useState<any>(service);
-    const date = new Date(`1970-01-01T${service.duration}Z`);
+    const date = new Date(`1970-01-01T${service.duration}`);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [errors, setErrors] = useState<string[]>([]);
@@ -64,7 +64,7 @@ const ServiceDialog = ({ service }: IProps) => {
                     <TableCell className="text-primary">₽{service.price}</TableCell>
                     <TableCell className="text-primary mb:hidden">{service.description}</TableCell>
                     <TableCell className="text-right text-primary">
-                        {date.getMinutes()} мин
+                        {date.getMinutes() + date.getHours() * 60} мин
                     </TableCell>
                     <TableCell className="text-md">
                         <Edit3 size={20} strokeWidth={1.5} />
