@@ -15,7 +15,7 @@ const ServicesList = ({ list, choose, data }: IProps) => {
     return (
         <div className="w-full flex flex-col mb:grid-cols-2 gap-4 mb:gap-2">
             {list.map((group) => (
-                <GroupItem item={group} key={group.name} choose={choose} data={data} />
+                <GroupItem item={group} key={group.name} choose={choose} services={[]} openDefault={false}  />
             ))}
         </div>
     )

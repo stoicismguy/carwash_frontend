@@ -172,7 +172,7 @@ const ConfCarwash = () => {
                     {/* Действия */}
                     <div className="flex justify-end mb:flex-col gap-2 mb-3">
                         <DeactivateDialog carWash={carWash} handleToggleActive={handleToggleActive} />
-                        <CarwashDialog carwash={carWash} refetch={fetchData} />
+                        <CarwashDialog carwash={carWash} refetch={fetchData} variant="edit" />
                     </div>
 
                     {/* Список филиалов */}
