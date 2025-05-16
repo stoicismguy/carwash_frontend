@@ -7,9 +7,8 @@ WORKDIR /app
 # Копирование package.json и package-lock.json
 COPY package*.json ./
 
-# Установка зависимостей с понижением версии React до совместимой
-RUN npm install --no-package-lock react@18.2.0 react-dom@18.2.0 && \
-    npm ci --legacy-peer-deps
+# Установка зависимостей с понижением версии React
+RUN npm install --legacy-peer-deps --force
 
 # Копирование всех файлов проекта
 COPY . .
