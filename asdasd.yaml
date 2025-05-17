@@ -1,0 +1,48 @@
+name: group-coi-containers # Имя группы ВМ, уникальным в рамках каталога.
+service_account_id: aje583ldv9gk0a9dtun8 # Идентификатор сервисного аккаунта.
+instance_template:
+  service_account_id: aje583ldv9gk0a9dtun8 # Идентификатор сервисного аккаунта для доступа к приватным Docker-образам.
+  platform_id: standard-v3 # Идентификатор платформы.
+  resources_spec:
+    memory: 2G # Количество памяти (RAM).
+    cores: 2 # Количество ядер процессора (vCPU).
+  boot_disk_spec:
+    mode: READ_WRITE # Режим доступа к диску: чтение и запись.
+    disk_spec:
+      image_id: fd8dercrj21cmfh4o13k
+      type_id: network-hdd # Тип диска.
+      size: 32G # Размер диска. Должен быть не менее 30 ГБ.
+  network_interface_specs:
+  - network_id: enpfqfm4hapu7g811937 # Идентификатор сети.
+    subnet_ids:
+      - e9bch672ovrsp4agnv87 # Идентификатор подсети.
+    primary_v4_address_spec: {
+      one_to_one_nat_spec: {
+        ip_version: IPV4 # Спецификация версии интернет-протокола IPv4 для публичного доступа к ВМ.
+      }
+    }
+  metadata: # Значения, которые будут переданы в метаданные ВМ.
+    docker-compose: |- # Ключ в метаданных ВМ, при котором используется Docker Compose спецификация.
+      version: '3.7'
+      services:
+          frontend:
+            image: cr.yandex/crp3s8kopsc5t6dqf5id/frontend
+            ports: ["80:80"]
+          backend:
+            image: cr.yandex/crp3s8kopsc5t6dqf5id/backend
+            ports: ["3000:8000"]
+          nginx:
+            image: nginx
+            ports: ["80:80"]
+            volumes: ["/etc/nginx:/etc/nginx"]
+    ssh-keys: |
+      pepegauser:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJSoUpYip465cyahzloBR8wqtm2qSDvRGyaFgD21IPh7 daniilterentev@MacBook-Air-Daniil.local
+deploy_policy: # Политика развертывания ВМ в группе.
+  max_unavailable: 1
+  max_expansion: 0
+scale_policy: # Политика масштабирования ВМ в группе.
+  fixed_scale:
+    size: 2
+allocation_policy: # Политика распределения ВМ по зонам доступности.
+  zones:
+    - zone_id: ru-central1-a
