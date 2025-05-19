@@ -177,7 +177,7 @@ const ConfBranch = () => {
                     {/* Действия */}
                     <div className="flex justify-between mb:flex-col gap-2 mb-3">
                         <DeactivateBranchDialog carWash={branch} handleToggleActive={handleToggleActive} />
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 mb:flex-col mb:w-full">
                             <Button 
                                 variant="outline" 
                                 size="lg"

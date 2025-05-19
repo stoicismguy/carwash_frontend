@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LineShadowText, Marquee } from "@/components/magicui";
 import { motion } from "framer-motion";
-import video from "@/assets/audio_card.mp4";
+import video from "@/assets/moiekb_wo_logo.mp4";
 import { cn } from "@/lib/utils";
 
 const Main = () => {
@@ -23,8 +23,8 @@ const Main = () => {
             {/* Костыль чтобы цвет фона был темный */}
             <style>{'body { background-color: var(--primary); }'}</style>
 
-            <div className="relative h-[700px] mb:h-[500px] overflow-hidden z-1">
-                <video autoPlay loop muted playsInline className="object-cover min-h-full origin-center">
+            <div className="relative h-[700px] mb:h-[500px] overflow-hidden z-1 flex items-center">
+                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
                     <source src={video} type="video/mp4"/>
                 </video>
                 <div className="absolute z-10 top-0 w-full h-full bg-black/50 flex flex-col">
@@ -83,12 +83,22 @@ const Main = () => {
                 </Marquee>     
             </div>
             <div className="w-full grid grid-cols-2 gap-y-2 gap-x-2 px-40 pt-10 mb:px-4 mb:flex mb:flex-col mb:items-center">
-                {Array(4).fill(0).map((_, i) => (
-                    <div className="w-full h-[200px] bg-primary-foreground text-primary py-4 px-6 rounded-lg">
-                        <h1 className="text-3xl font-bold">Отмоем твою тачилу</h1>
-                        <p className="text-lg text-primary/60">Безболезненно, без лишних нервов и суеты</p>
-                    </div>
-                ))}
+                <div className="w-full h-[200px] bg-primary-foreground text-primary py-4 px-6 rounded-lg">
+                    <h1 className="text-3xl font-bold">🧽 Отмоем твою тачилу</h1>
+                    <p className="text-lg text-primary/60">Безболезненно, без лишних нервов и суеты.</p>
+                </div>
+                <div className="w-full h-[200px] bg-primary-foreground text-primary py-4 px-6 rounded-lg">
+                    <h1 className="text-3xl font-bold">⚡️ Сияй на дороге!</h1>
+                    <p className="text-lg text-primary/60">Чистая тачка без хлопот — найдём лучшую мойку за пару кликов.</p>
+                </div>
+                <div className="w-full h-[200px] bg-primary-foreground text-primary py-4 px-6 rounded-lg">
+                    <h1 className="text-3xl font-bold">💯 Грязь? Не твой стиль!</h1>
+                    <p className="text-lg text-primary/60">Доверь свою машину профи, а мы подберём ближайшую топ-мойку.</p>
+                </div>
+                <div className="w-full h-[200px] bg-primary-foreground text-primary py-4 px-6 rounded-lg">
+                    <h1 className="text-3xl font-bold">🔥 Тачка как новая!</h1>
+                    <p className="text-lg text-primary/60">Быстро, качественно, без очередей — твоя идеальная мойка уже ждёт.</p>
+                </div>
             </div>
         </div>     
     )

@@ -28,13 +28,20 @@ instance_template:
           frontend:
             image: cr.yandex/crp3s8kopsc5t6dqf5id/frontend
             ports: ["80:80"]
+            networks:
+              - app-network
           backend:
             image: cr.yandex/crp3s8kopsc5t6dqf5id/backend
             ports: ["3000:8000"]
+            networks:
+            - app-network
           nginx:
             image: nginx
             ports: ["80:80"]
             volumes: ["/etc/nginx:/etc/nginx"]
+      networks:
+        app-network:
+          driver: bridge
     ssh-keys: |
       pepegauser:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJSoUpYip465cyahzloBR8wqtm2qSDvRGyaFgD21IPh7 daniilterentev@MacBook-Air-Daniil.local
 deploy_policy: # Политика развертывания ВМ в группе.

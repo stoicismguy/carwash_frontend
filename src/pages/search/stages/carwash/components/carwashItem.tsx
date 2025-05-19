@@ -51,14 +51,17 @@ const CarwashItem = ({item, choose, data}: IProps) => {
                     >
                     <div className="flex flex-col gap-2 flex-grow-0 flex-shrink-0">
                         <h1 className="text-2xl font-semibold text-primary whitespace-nowrap truncate">{item.name}</h1>
-                        <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>
-                        {item.logo && (
-                        <img
-                            src={item.logo}
-                            className="w-12 h-12 rounded-md object-cover"
-                            alt={`${item.name} logo`}
-                        />
-                        )}
+                        <div className="flex items-start gap-2">
+                            {item.logo && (
+                            <img
+                                src={item.logo}
+                                className="w-22 h-22 rounded-md object-cover"
+                                alt={`${item.name} logo`}
+                            />
+                            )}
+                            <p className="text-sm text-muted-foreground line-clamp-4">{item.description}</p>
+                        </div>
+                        
                     </div>
                     <div className="w-full flex flex-col gap-2 mt-auto">
                         <div className="flex gap-1 items-center">

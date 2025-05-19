@@ -23,6 +23,7 @@ const CreateReviewDialog = ({ branch, address, refetch }: IProps) => {
             description: description
         }).then((res) => {
             setOpen(false);
+            refetch();
         });
     }
 
